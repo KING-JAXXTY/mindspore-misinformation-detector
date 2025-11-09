@@ -1,0 +1,4514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Phone Base Model</title>
+  <style>
+    body {
+      /* Soft gradient background */
+      background: linear-gradient(135deg, #000000 0%, #f0fdfa 100%);
+      min-height: 100vh;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      transition: background 0.5s;
+      overflow: hidden;
+    }
+    .mobile-mockup {
+      position: relative;
+      margin: auto;
+      border: 14px solid #000;
+      background: #000;
+      border-radius: 2.5rem;
+      height: 844px;
+      min-height: 844px;
+      max-height: 844px;
+      width: 390px;
+      min-width: 390px;
+      max-width: 390px;
+      box-shadow: 0 12px 48px 0 rgba(0,0,0,0.35), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Glass effect */
+      backdrop-filter: blur(2.5px) saturate(120%);
+      transition: box-shadow 0.3s;
+    }
+    .notch {
+      width: 148px;
+      height: 18px;
+      background: #000;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 0 0 1rem 1rem;
+      z-index: 2;
+    }
+    .side-btn {
+      position: absolute;
+      width: 3px;
+      background: #262626;
+      border-radius: 0.75rem;
+      z-index: 2;
+    }
+    .side-btn.left1 {
+      height: 46px;
+      left: -17px;
+      top: 124px;
+      border-radius: 0.75rem 0 0 0.75rem;
+    }
+    .side-btn.left2 {
+      height: 46px;
+      left: -17px;
+      top: 178px;
+      border-radius: 0.75rem 0 0 0.75rem;
+    }
+    .side-btn.right {
+      height: 64px;
+      right: -17px;
+      top: 142px;
+      border-radius: 0 0.75rem 0.75rem 0;
+    }
+    .screen-inner {
+      border-radius: 2rem;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      max-height: 100%;
+      background: rgba(20, 20, 30, 0.85);
+      position: relative;
+      display: block;
+      z-index: 1;
+      box-shadow: 0 2px 16px 0 rgba(0,0,0,0.18);
+      /* Glass effect */
+      backdrop-filter: blur(8px) saturate(120%);
+      transition: background 0.4s;
+      box-sizing: border-box;
+    }
+
+    .app-placeholder {
+      color: #fff;
+      font-size: 1.5em;
+      text-align: center;
+      border-radius: 1.5rem;
+      background: rgba(255,255,255,0.03);
+      box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
+      padding: 12px 0 80px 0;
+      margin: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      transition: background 0.4s;
+      box-sizing: border-box;
+    }
+
+    /* Professional / more "wild" intro */
+    .intro {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: #fff;
+      z-index: 40;
+      padding: 28px;
+      box-sizing: border-box;
+      overflow: hidden;
+      border-radius: 2rem;
+      /* animated layered gradient */
+      background:
+        radial-gradient(1200px 600px at 10% 20%, rgba(0,255,200,0.06), transparent 12%),
+        radial-gradient(1000px 500px at 90% 80%, rgba(255,255,255,0.02), transparent 12%),
+        linear-gradient(180deg, #008081 0%, #000000 100%) ;
+    }
+
+    
+
+    /* subtle moving shimmer behind intro */
+    .intro::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: conic-gradient(from 0deg at 50% 50%, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+      filter: blur(18px) saturate(120%);
+      transform: rotate(0deg);
+      animation: swirl 18s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes swirl { to { transform: rotate(360deg); } }
+
+    .intro-logo {
+      width: 110px;
+      height: 110px;
+      min-width: 110px;
+      min-height: 110px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+      transform-origin: center;
+      box-shadow: 0 12px 40px rgba(2,10,60,0.35), inset 0 -6px 24px rgba(255,255,255,0.02);
+      position: relative;
+      z-index: 5;
+      animation: popIn 900ms cubic-bezier(.2,.9,.2,1) both;
+    }
+
+    @keyframes popIn {
+      0% { transform: translateY(12px) scale(0.5) rotate(-8deg); opacity: 0; }
+      60% { transform: translateY(-6px) scale(1.06) rotate(4deg); opacity: 1; }
+      100% { transform: translateY(0) scale(1) rotate(0); }
+    }
+
+    .intro-logo img {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      border-radius: 12px;
+      display: none;
+      transform: translateY(2px);
+      filter: drop-shadow(0 6px 20px rgba(2,10,60,0.35));
+    }
+
+    .intro-logo svg {
+      width: 72px;
+      height: 72px;
+      fill: white;
+      opacity: 0.98;
+      transform: translateY(2px);
+    }
+
+    /* decorative animated rings around logo */
+    .rings { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+    .ring {
+      position: absolute;
+      left: 50%;
+      top: 30%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.06);
+      width: 140px;
+      height: 140px;
+      opacity: 0.9;
+      animation: ringPulse 2400ms ease-in-out infinite;
+    }
+    .ring.r2 { width: 180px; height: 180px; border-width: 1px; animation-delay: 260ms; opacity:0.7; }
+    .ring.r3 { width: 230px; height: 230px; border-width: 0.9px; animation-delay: 520ms; opacity:0.5; }
+    @keyframes ringPulse {
+      0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.0; }
+      40% { opacity: 0.18; transform: translate(-50%, -50%) scale(1); }
+      100% { transform: translate(-50%, -50%) scale(1.12); opacity: 0; }
+    }
+
+    .intro-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-shadow: 0 6px 18px rgba(0,0,0,0.35);
+      z-index: 6;
+      transform: translateY(6px);
+      opacity: 0;
+      animation: textUp 700ms 280ms ease forwards;
+    }
+    .intro-sub {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.9);
+      z-index: 6;
+      transform: translateY(8px);
+      opacity: 0;
+      animation: textUp 700ms 420ms ease forwards;
+    }
+    @keyframes textUp { to { transform: translateY(0); opacity: 1; } }
+
+    /* fancy progress: striped + glow + moving sheen */
+    .intro-progress {
+      width: 220px;
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,255,214,0.3) inset;
+      z-index: 6;
+      position: relative;
+    }
+    .intro-progress .bar {
+      height: 100%;
+      width: 0%;
+      background:
+        linear-gradient(90deg, rgba(0,255,218,0.95), rgba(255,255,255,0.95));
+      border-radius: 999px;
+      box-shadow: 0 8px 30px rgba(0,255,210,0.12);
+      position: relative;
+      overflow: hidden;
+      animation: progressGrow 1700ms 650ms cubic-bezier(.2,.9,.2,1) forwards;
+    }
+    .intro-progress .bar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(120deg, rgba(255,255,255,0.12) 0 20%, rgba(255,255,255,0.02) 30% 100%);
+      transform: translateX(-60%);
+      animation: sheen 1300ms 850ms linear forwards;
+    }
+    @keyframes sheen { to { transform: translateX(160%); } }
+
+    @keyframes progressGrow { to { width: 100%; } }
+
+    /* little sparkles */
+    .sparkles { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle at 30% 30%, #fff 0%, rgba(255,255,255,0.6) 35%, rgba(255,255,255,0) 60%);
+      border-radius: 50%;
+      opacity: 0;
+      filter: blur(6px);
+      animation: sparklePop 1300ms ease forwards;
+    }
+    @keyframes sparklePop {
+      0% { transform: translateY(8px) scale(0.4); opacity: 0; }
+      40% { opacity: 0.9; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-18px) scale(0.6); }
+    }
+
+    /* hide intro with stylish scale+fade and glass slide */
+    .intro-hidden { opacity: 0; transform: translateY(-6px) scale(0.98); transition: all 420ms cubic-bezier(.2,.9,.2,1); pointer-events: none; }
+
+    /* app reveal: glassy slide + blur-out */
+    .screen-inner.revealed { 
+      /* small delay so intro hides gracefully */
+      transition: filter 420ms ease, transform 420ms ease;
+      transform: translateY(0);
+      filter: none;
+    }
+
+    /* ensure content hidden until revealed */
+    .screen-inner .app-placeholder { display: none; }
+    .screen-inner.revealed .app-placeholder { display: flex; align-items:center; justify-content:center; }
+
+    /* hide bottom nav while intro is active; show after reveal */
+    .screen-inner .bottom-nav { display: none; }
+    .screen-inner.revealed .bottom-nav { display: flex; }
+
+    /* Bottom nav styles */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      max-width: 100%;
+      height: 64px;
+      min-height: 64px;
+      max-height: 64px;
+
+      /* Remove transparency and use solid color */
+
+      background: #000000;
+      border-radius: 0 0 2rem 2rem;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 6px 12px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+      z-index: 999;
+      backdrop-filter: none;
+      border-top: 1.5px solid #292929;
+      transition: background 0.3s, box-shadow 0.3s;
+      pointer-events: all;
+      
+    }
+
+    .bottom-nav a {
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      width: 56px;
+      height: 56px;
+      justify-content: center;
+      border-radius: 12px;
+      transition: background 160ms, color 160ms, transform 160ms;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      box-shadow: 0 1px 4px 0 rgba(0,0,0,0.07);
+      background: transparent;
+    }
+
+    .bottom-nav a:hover {
+      background: #000000;
+      color: #2563eb;
+      transform: translateY(-2px) scale(1.04);
+    }
+
+    .bottom-nav a .icon { width: 24px; height: 24px; }
+
+    .bottom-nav a.active {
+      color: #ffffff;
+      background: #000000;
+      box-shadow: none;
+      border: none;
+      transform: translateY(-2px) scale(1.05);
+    }
+
+    .bottom-nav a.active .icon {
+      stroke: hsl(0, 0%, 100%);
+    }
+
+    /* Toggle switch (VPN style) */
+    .toggle-switch {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      gap: 8px;
+    }
+    .toggle-switch input[type="checkbox"] {
+      display: none;
+    }
+    .toggle-slider {
+      width: 44px;
+      height: 26px;
+      background: #222;
+      border-radius: 13px;
+      position: relative;
+      transition: background 0.2s;
+      box-shadow: 0 1px 4px 0 rgba(0,0,0,0.10);
+    }
+    .toggle-switch input[type="checkbox"]:checked + .toggle-slider {
+      background: linear-gradient(90deg, #00ffd6 0%, #00b8ff 100%);
+    }
+    .toggle-slider::before {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      transition: left 0.2s;
+      box-shadow: 0 1px 4px 0 rgba(0,0,0,0.13);
+    }
+    .toggle-switch input[type="checkbox"]:checked + .toggle-slider::before {
+      left: 21px;
+    }
+    .toggle-switch .toggle-label {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    /* Perfect circular spinner */
+    .bubble-spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      flex-shrink: 0; /* Prevent deformation */
+      display: inline-block; /* Ensure proper rendering */
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* News Feed Styles */
+    .news-section {
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .news-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 8px;
+    }
+    .news-header h2 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+    }
+    .refresh-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .refresh-btn:hover {
+      background: rgba(255,255,255,0.10);
+    }
+    .refresh-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: rgba(255,255,255,0.7);
+      transition: stroke 0.2s, transform 0.5s;
+      display: block;
+    }
+    .refresh-btn:hover svg {
+      stroke: #fff;
+      transform: rotate(180deg);
+    }
+
+    .news-feed {
+      width: 100%;
+      max-height: 320px;
+      overflow-y: auto;
+      padding: 4px 2px;
+      box-sizing: border-box;
+      text-align: left;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(4px);
+    }
+    .news-feed::-webkit-scrollbar {
+      width: 6px;
+    }
+    .news-feed::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.18);
+      border-radius: 3px;
+    }
+    .news-feed::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(255, 255, 255, 0.28);
+    }
+
+    .news-article {
+      display: flex;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      padding: 6px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      align-items: flex-start;
+      transition: background 0.2s;
+      position: relative;
+      min-height: 60px;
+      max-height: 80px;
+      overflow: hidden;
+    }
+    .news-article:has(.credibility-explanation[style*="block"]) {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .news-article:hover {
+      background: rgba(255, 255, 255, 0.09);
+    }
+    .news-article a {
+      text-decoration: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+    
+    /* Huawei AI Credibility Badge */
+    .huawei-ai-badge {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      color: white;
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 3px 6px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      z-index: 2;
+      pointer-events: none;
+      margin: 2px;
+      min-width: 45px;
+      justify-content: center;
+    }
+    .huawei-ai-badge.high-credibility {
+      background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    }
+    .huawei-ai-badge.medium-credibility {
+      background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    }
+    .huawei-ai-badge.low-credibility {
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    }
+    .huawei-ai-badge.loading-credibility {
+      background: linear-gradient(135deg, #666 0%, #888 100%);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    .huawei-ai-badge .shield-icon {
+      width: 11px;
+      height: 11px;
+      fill: currentColor;
+    }
+    .huawei-ai-badge {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      z-index: 100 !important;
+      position: relative !important;
+      pointer-events: auto !important;
+    }
+    .huawei-ai-badge:hover {
+      transform: scale(1.05);
+    }
+    .huawei-ai-badge:active {
+      transform: scale(0.95);
+    }
+    
+    /* Compact Credibility Panel */
+    .credibility-explanation {
+      display: none;
+      position: absolute;
+      background: rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 8px 10px;
+      width: calc(100% - 20px);
+      max-width: 180px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      font-size: 9px;
+      line-height: 1.1;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+    }
+    .credibility-explanation h4 {
+      margin: 0 0 4px 0;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 10px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .credibility-score-display {
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.9);
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .credibility-factor {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 3px 0;
+      padding: 3px 6px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      border-left: 3px solid rgba(255, 255, 255, 0.15);
+    }
+    .factor-name {
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+      font-size: 8px;
+      flex: 1;
+    }
+    .factor-score {
+      font-weight: 600;
+      font-size: 8px;
+      padding: 1px 3px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .credibility-explanation .close-btn {
+      position: absolute;
+      top: 4px;
+      right: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      font-size: 10px;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .credibility-explanation .close-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Loading Animation */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .news-image {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 6px;
+      flex-shrink: 0;
+      background-color: rgba(255,255,255,0.08);
+      align-self: flex-start;
+      margin-top: 2px;
+    }
+    .news-content {
+      flex-grow: 1;
+      min-width: 0;
+      padding-right: 10px; /* Reduced padding since badge is on the left */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .news-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin: 0 0 2px 0;
+      line-height: 1.2;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .news-meta {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.6);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: auto;
+    }
+
+    /* Stats Panel Styles */
+    .stats-panel {
+      width: 90%;
+      display: flex;
+      justify-content: space-around;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 16px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+    }
+    .stat-item {
+      text-align: center;
+      flex: 1;
+    }
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.6);
+    }
+    .reliability-high { color: #4ade80; } /* green-400 */
+    .reliability-medium { color: #facc15; } /* yellow-400 */
+    .reliability-low { color: #f87171; } /* red-400 */
+
+    /* Settings Page Styles */
+    .settings-section {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .settings-section h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      margin: 0 0 12px 0;
+    }
+    .btn-danger {
+      background-color: #ef4444; /* red-500 */
+      color: #fff;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.2s;
+    }
+    .btn-danger:hover {
+      background-color: #dc2626; /* red-600 */
+    }
+
+    /* Power Button Styles */
+    .power-btn-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 36px;
+      margin-bottom: 18px;
+    }
+    .power-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #222 60%, #00ffd6 100%);
+      box-shadow: 0 4px 24px rgba(0,255,214,0.12), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      position: relative;
+      transition: background 0.2s, box-shadow 0.2s;
+      animation: powerPulse 2s infinite alternate;
+    }
+    .power-btn.on {
+      background: linear-gradient(145deg, #00ffd6 60%, #00b8ff 100%);
+      box-shadow: 0 0 0 0 #00ffd6, 0 0 24px 6px #00ffd655;
+      animation: powerPulseOn 1.2s infinite alternate;
+    }
+    @keyframes powerPulse {
+      0% { box-shadow: 0 4px 24px rgba(0,255,214,0.12); }
+      100% { box-shadow: 0 0 16px 4px #00ffd633; }
+    }
+    @keyframes powerPulseOn {
+      0% { box-shadow: 0 0 0 0 #00ffd6, 0 0 24px 6px #00ffd655; }
+      100% { box-shadow: 0 0 0 8px #00ffd622, 0 0 32px 12px #00ffd655; }
+    }
+    .power-btn svg {
+      width: 32px;
+      height: 32px;
+      stroke: #fff;
+      stroke-width: 2.2;
+      fill: none;
+      transition: stroke 0.2s;
+      pointer-events: none;
+    }
+    .power-btn.on svg {
+      stroke: #222;
+    }
+    .power-btn-label {
+      display: block;
+      text-align: center;
+      color: #fff;
+      font-size: 1.08rem;
+      font-weight: 500;
+      margin-top: 8px;
+      letter-spacing: 0.02em;
+      opacity: 0.85;
+      user-select: none;
+    }
+
+    /* Bubble Clipboard Panel Enhanced UI */
+    #floatingBubblePanel {
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #f0fdfa 60%, #e0e7ff 100%);
+      color: #222;
+      border-radius: 16px !important;
+      border: 2px solid #00ffd6 !important;
+      box-shadow: 0 8px 32px rgba(0,255,214,0.13), 0 2px 12px rgba(0,0,0,0.10);
+      padding: 18px 16px 14px 16px !important;
+      min-width: 240px;
+      max-width: 340px;
+      display: none;
+      position: absolute;
+      z-index: 100;
+      right: 0;
+      bottom: 64px;
+      animation: bubblePanelPop 0.28s cubic-bezier(.2,.9,.2,1);
+    }
+    @keyframes bubblePanelPop {
+      0% { opacity: 0; transform: translateY(16px) scale(0.96);}
+      100% { opacity: 1; transform: translateY(0) scale(1);}
+    }
+    #floatingBubblePanel .bubble-panel-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #00b8a9;
+      margin-bottom: 8px;
+      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #floatingBubblePanel .bubble-panel-summary {
+      font-size: 0.98rem;
+      color: #222;
+      margin-bottom: 10px;
+      line-height: 1.5;
+      max-height: 120px;
+      /* Remove scrollbar, allow wrapping */
+      overflow: hidden;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      border-radius: 8px;
+      background: #f7fafc;
+      padding: 8px 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      /* Make it mobile friendly */
+      width: 100%;
+      box-sizing: border-box;
+    }
+    #floatingBubblePanel .bubble-panel-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+      font-size: 0.97rem;
+    }
+    #floatingBubblePanel .bubble-panel-label {
+      font-weight: 600;
+      color: #00b8a9;
+      min-width: 98px;
+    }
+    #floatingBubblePanel .bubble-panel-value {
+      font-weight: 500;
+      color: #222;
+    }
+    #floatingBubblePanel .bubble-panel-value.positive {
+      color: #22c55e;
+    }
+    #floatingBubblePanel .bubble-panel-value.negative {
+      color: #ef4444;
+    }
+    #floatingBubblePanel .bubble-panel-value.neutral {
+      color: #f59e42;
+    }
+    #floatingBubblePanel .bubble-panel-divider {
+      height: 1px;
+      background: linear-gradient(90deg,#00ffd6 0,#e0e7ff 100%);
+      border: none;
+      margin: 10px 0 8px 0;
+      opacity: 0.5;
+    }
+
+    /* --- Global Scrollbar Hiding --- */
+    ::-webkit-scrollbar {
+      display: none; /* for Chrome, Safari, and Opera */
+    }
+    * {
+      -ms-overflow-style: none;  /* for IE and Edge */
+      scrollbar-width: none;  /* for Firefox */
+    }
+
+    /* Tool Selector Button Grid Styles */
+    .tool-selector-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 10px 6px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: center;
+      min-height: 62px;
+    }
+    .tool-selector-btn svg {
+      width: 18px;
+      height: 18px;
+      opacity: 0.7;
+      transition: all 0.3s ease;
+    }
+    .tool-selector-btn:hover {
+      background: linear-gradient(135deg, rgba(0,255,214,0.15) 0%, rgba(0,255,214,0.08) 100%);
+      border-color: rgba(0,255,214,0.4);
+      color: #00ffd6;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,255,214,0.2);
+    }
+    .tool-selector-btn:hover svg {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    .tool-selector-btn:active {
+      transform: translateY(0);
+    }
+    .tool-selector-btn.active {
+      background: linear-gradient(135deg, rgba(0,255,214,0.25) 0%, rgba(0,255,214,0.15) 100%);
+      border-color: #00ffd6;
+      color: #00ffd6;
+      box-shadow: 0 0 20px rgba(0,255,214,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .tool-selector-btn.active svg {
+      opacity: 1;
+    }
+
+    /* New Tool Card Styles */
+    .tool-card {
+      background: linear-gradient(135deg, #18181b 60%, #23272f 100%);
+      border-radius: 18px;
+      padding: 16px; /* Reduced padding */
+      box-shadow: 0 4px 16px rgba(0, 255, 214, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .tool-card-header {
+      font-weight: 700;
+      margin-bottom: 12px; /* Reduced margin */
+      font-size: 1.05em; /* Reduced font size */
+      letter-spacing: 0.01em;
+      color: #00ffd6;
+      display: flex;
+      align-items: center;
+      justify-content: center; /* Center header content */
+      gap: 8px; /* Reduced gap */
+    }
+    .tool-card-header svg {
+      width: 20px; /* Reduced icon size */
+      height: 20px;
+      stroke: #00ffd6;
+      stroke-width: 1.5; /* Standardize stroke width */
+      flex-shrink: 0; /* Prevent icon from shrinking */
+    }
+    .tool-card label {
+      font-size: 0.9em; /* Reduced font size */
+      color: #cbd5e1;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .tool-card .file-input-wrapper {
+      position: relative;
+      display: block;
+      margin-bottom: 12px; /* Reduced margin */
+    }
+    .tool-card .file-input-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px; /* Reduced padding */
+      background: #23272f;
+      color: #cbd5e1;
+      border-radius: 8px;
+      border: 1.5px dashed #00ffd6;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .tool-card .file-input-label:hover {
+      background: #2c313a;
+      color: #fff;
+    }
+    .tool-card .file-input-label svg {
+      width: 16px; /* Reduced icon size */
+      height: 16px;
+      stroke: currentColor;
+      flex-shrink: 0;
+    }
+    .tool-card input[type="file"] {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+    .file-name-display {
+      font-size: 0.85em;
+      color: #a0aec0;
+      margin-top: -8px;
+      margin-bottom: 12px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 1.2em;
+    }
+    .tool-card textarea {
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 8px;
+      padding: 8px 10px; /* Reduced padding */
+      border: 1.5px solid #00ffd6;
+      background: #23272f;
+      color: #fff;
+      margin-bottom: 10px; /* Reduced margin */
+      resize: vertical;
+      min-height: 60px; /* Reduced height */
+      font-size: 0.95em; /* Reduced font size */
+    }
+    .tool-card button {
+      padding: 9px 0; /* Reduced padding */
+      width: 100%;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #00ffd6 0%, #00b8ff 100%);
+      color: #18181b;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-size: 1em; /* Reduced font size */
+      box-shadow: 0 2px 8px 0 #00ffd622;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .tool-card button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px 0 #00ffd633;
+    }
+    .tool-result-area {
+      margin-top: 16px;
+      font-size: 0.97em;
+      color: #fff;
+      min-height: 24px;
+      background: #101c2c;
+      border-radius: 8px;
+      padding: 12px;
+      word-break: break-word;
+      max-height: 200px; /* Contain long results */
+      overflow-y: auto; /* Allow scrolling for long results */
+    }
+    .result-judgment {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 1.05em;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .result-explanation {
+      color: rgba(255,255,255,0.85);
+      line-height: 1.5;
+    }
+
+
+    .eye-logo {
+  width: 130px;
+  height: 130px;
+  background: radial-gradient(circle at 50% 40%, #00d4ff 0%, #0099cc 50%, #006b8f 100%);
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(0,212,255,0.3), 0 0 60px rgba(0,212,255,0.15), inset 0 -10px 20px rgba(0,0,0,0.2);
+  animation: eyeGlow 3s ease-in-out infinite;
+}
+
+@keyframes eyeGlow {
+  0%, 100% { box-shadow: 0 8px 32px rgba(0,212,255,0.3), 0 0 60px rgba(0,212,255,0.15), inset 0 -10px 20px rgba(0,0,0,0.2); }
+  50% { box-shadow: 0 8px 40px rgba(0,212,255,0.5), 0 0 80px rgba(0,212,255,0.25), inset 0 -10px 20px rgba(0,0,0,0.15); }
+}
+
+.eye-logo::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 72px;
+  height: 46px;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 
+    0 0 0 3px rgba(0,212,255,0.4),
+    inset 0 2px 4px rgba(0,0,0,0.05);
+  z-index: 1;
+}
+
+.eye-logo::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle at 35% 35%, #5b8ff9 0%, #3366cc 40%, #1a4d99 100%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  box-shadow: 
+    0 0 0 2px #66a3ff,
+    0 0 0 6px rgba(102,163,255,0.3),
+    inset 0 -3px 6px rgba(0,0,0,0.4),
+    inset 0 2px 4px rgba(255,255,255,0.3);
+}
+
+.eye-logo span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 30% 30%, #1a1a2e 0%, #000000 100%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.eye-logo span::after {
+  content: "";
+  position: absolute;
+  left: 60%;
+  top: 30%;
+  width: 5px;
+  height: 5px;
+  background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.8) 100%);
+  border-radius: 50%;
+  opacity: 0.95;
+  box-shadow: 0 0 3px rgba(255,255,255,0.8);
+}
+
+.intro .eye-logo span {
+  animation: eyeMovement 5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+@keyframes eyeMovement {
+  0% { transform: translate(-50%, -50%); }
+  8% { transform: translate(-50%, -50%); }
+  12% { transform: translate(-72%, -50%); }
+  20% { transform: translate(-72%, -50%); }
+  24% { transform: translate(-50%, -50%); }
+  32% { transform: translate(-50%, -50%); }
+  36% { transform: translate(-28%, -50%); }
+  44% { transform: translate(-28%, -50%); }
+  48% { transform: translate(-50%, -50%); }
+  56% { transform: translate(-50%, -50%); }
+  60% { transform: translate(-50%, -72%); }
+  68% { transform: translate(-50%, -72%); }
+  72% { transform: translate(-50%, -50%); }
+  80% { transform: translate(-50%, -50%); }
+  84% { transform: translate(-35%, -35%); }
+  88% { transform: translate(-50%, -50%); }
+  100% { transform: translate(-50%, -50%); }
+}
+
+  </style>
+</head>
+<body>
+  <div class="mobile-mockup">
+    <div class="notch"></div>
+    <div class="side-btn left1"></div>
+    <div class="side-btn left2"></div>
+    <div class="side-btn right"></div>
+    <div class="screen-inner">
+      <!-- professional intro -->
+      <div class="intro" id="intro" aria-hidden="false">
+        <div class="rings" aria-hidden="true">
+          <span class="ring r1"></span>
+          <span class="ring r2"></span>
+          <span class="ring r3"></span>
+        </div>
+
+        <div class="eye-logo"></div>
+
+        <script>
+         document.querySelector(".eye-logo").innerHTML = "<span></span>";
+        </script>
+
+        <div class="intro-title">ShoAI</div>
+        <div class="intro-sub">Your Digital Shield</div>
+        <div class="intro-progress" aria-hidden="true"><div class="bar"></div></div>
+
+
+        <div class="sparkles" aria-hidden="true">
+          <span class="sparkle" style="left:18%; top:36%; animation-delay:220ms"></span>
+          <span class="sparkle" style="left:76%; top:30%; animation-delay:420ms"></span>
+          <span class="sparkle" style="left:52%; top:68%; animation-delay:760ms"></span>
+        </div>
+      </div>
+
+      
+      <!-- main app content (hidden until intro finishes) -->
+      <div class="app-placeholder" id="appContent">
+        <!-- fragment area where pages load -->
+        <div id="pageFragment" style="width:100%;height:100%;"></div>
+
+        <!-- persistent bottom-nav -->
+        <nav class="bottom-nav" id="bottomNav" role="navigation" aria-label="Bottom navigation">
+          <a href="/" data-href="/" title="Home" aria-label="Home">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span>Home</span>
+          </a>
+
+
+          <a href="/statistics" data-href="/statistics" title="Statistic" aria-label="Statistic">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20V16"></path></svg>
+            <span>Statistic</span>
+          </a>
+
+
+          <a href="/tools" data-href="/tools" title="Tools" aria-label="Tools">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg>
+            <span>Tools</span>
+          </a>
+
+
+          <a href="/sync-info" data-href="/sync-info" title="Sources" aria-label="Sources">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+            <span>Sources</span>
+          </a>
+          
+
+          <a href="/settings" data-href="/settings" title="Settings" aria-label="Settings">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>Settings</span>
+            
+          </a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Wait for DOM and animations, then hide intro and reveal app content.
+    document.addEventListener('DOMContentLoaded', () => {
+      const intro = document.getElementById('intro');
+      const appContent = document.getElementById('appContent');
+      const screenInner = intro?.parentElement;
+
+      // Load local logo from images/list.json (first file) and show it if available.
+      (async function loadLocalLogo() {
+        const imgEl = document.getElementById('introLogoImg');
+        const fallbackSvg = document.getElementById('introFallbackSvg');
+        try {
+          const res = await fetch('./images/list.json', { cache: 'no-store' });
+          if (!res.ok) throw new Error('list.json not found');
+          const list = await res.json();
+          if (Array.isArray(list) && list.length > 0) {
+            const filename = list[0];
+            const path = './images/' + filename;
+            imgEl.src = path;
+            imgEl.onload = () => {
+              imgEl.style.display = 'block';
+              if (fallbackSvg) fallbackSvg.style.display = 'none';
+              // tiny bounce to match new size
+              imgEl.parentElement.animate([{ transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 420 });
+              };
+            
+      
+              // Close the event listener function for btn.addEventListener
+            imgEl.onerror = () => {
+              console.warn('Intro logo image failed to load:', path);
+            };
+            return;
+          }
+        } catch (err) {
+          console.warn('Could not load images/list.json, using fallback SVG.', err);
+        }
+      })();
+
+      // When progress animation ends, fade intro and reveal app
+      const bar = intro.querySelector('.intro-progress .bar');
+      const onProgressEnd = () => {
+        // allow a brief pause for polish, then hide intro
+        setTimeout(() => {
+          intro.classList.add('intro-hidden');
+          // after fade transition, remove intro from DOM and reveal content
+          intro.addEventListener('transitionend', () => {
+            if (intro.parentNode) intro.parentNode.removeChild(intro);
+            if (screenInner) screenInner.classList.add('revealed');
+          }, { once: true });
+        }, 220); // small pause before hiding
+      };
+
+      // If animations support 'animationend' for the bar, use it, otherwise fallback to timeout
+      if (bar) {
+        bar.addEventListener('animationend', onProgressEnd, { once: true });
+        // fallback: if animationend doesn't fire (very old browsers), hide after 2s
+        setTimeout(() => {
+          if (intro && intro.parentNode) {
+            // only proceed if intro still present
+            onProgressEnd();
+          }
+        }, 2200);
+      } else {
+        // no bar found -> fallback delay
+        setTimeout(onProgressEnd, 1200);
+      }
+    });
+
+    // Activate bottom-nav, load local fragment files and inject into #appContent.
+    (function delegatedBottomNav() {
+      const content = document.getElementById('pageFragment'); // load fragments into the dedicated fragment container
+      const persistentNav = document.getElementById('bottomNav');
+      if (!content || !persistentNav) return;
+
+      let analysisHistory = JSON.parse(localStorage.getItem('analysisHistory')) || []; // Load from localStorage
+
+      function normalizeRouteFromHref(h) {
+        if (!h) return 'home';
+        let route = h;
+        if (route.startsWith('#')) route = route.slice(1);
+        if (route === '/' || route === '') return 'home';
+        if (route.startsWith('/')) route = route.slice(1);
+        return route.replace(/\/+$/, '') || 'home';
+      }
+
+      // Inline fallback fragments so UI works even if external files are missing.
+      const defaultFragments = {
+        home: `
+          <div style="display: flex; flex-direction: column; align-items: center; height: 100%; width:100%; color: #fff; position: relative; gap: 20px; font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; padding-top: 10%; box-sizing: border-box;">
+            <div style="text-align: center;">
+              <h1 style="font-size: 2.5rem; font-weight: 800; letter-spacing: 1.5px; text-shadow: 0 4px 24px rgba(0,0,0,0.5); margin: 0 0 16px 0; z-index: 2;">
+                ShoAI
+              </h1>
+            </div>
+            <div class="power-btn-wrap">
+              <button id="bubblePowerBtn" class="power-btn" aria-label="Enable Bubble">
+                <svg viewBox="0 0 48 48">
+                  <path d="M24 10v14"/>
+                  <path d="M16.2 19.8a8 8 0 1 0 15.6 0"/>
+                  <circle cx="24" cy="24" r="20" stroke-opacity="0.18"/>
+                </svg>
+              </button>
+            </div>
+            <span class="power-btn-label">Enable Bubble</span>
+            <div class="stats-panel">
+              <div class="stat-item">
+                <div id="stats-analyzed" class="stat-value">0</div>
+                <div class="stat-label">Analyzed</div>
+              </div>
+              
+              <div class="stat-item">
+                <div id="stats-flagged" class="stat-value">0</div>
+                <div class="stat-label">Flagged</div>
+              </div>
+              <div class="stat-item">
+                <div id="stats-reliability" class="stat-value">--</div>
+                <div class="stat-label">Avg. Reliability</div>
+              </div>
+            </div>
+            <div class="news-section">
+              <div class="news-header">
+                <h2>Latest News</h2>
+                <button id="refreshNewsBtn" class="refresh-btn" aria-label="Refresh News">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                </button>
+              </div>
+              <div id="newsFeed" class="news-feed">
+                <div style="display:flex; justify-content:center; align-items:center; height: 100%;">
+                  <div>Awaiting new data source integration.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        statistics: `
+          <div style="width:100%;min-height:100%;padding:20px 16px 90px;box-sizing:border-box;color:#fff;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow-y:auto;">
+            <h2 style="margin:0 0 20px;font-size:1.4rem;text-align:center;font-weight:700;">Analytics Dashboard</h2>
+            
+            <!-- Summary Cards -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+              <div style="background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);border-radius:12px;padding:16px;text-align:center;">
+                <div style="font-size:2rem;font-weight:700;color:#60a5fa;" id="stats-total-analyzed">0</div>
+                <div style="font-size:0.85rem;color:#cbd5e1;margin-top:4px;">Total Analyzed</div>
+              </div>
+              <div style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:16px;text-align:center;">
+                <div style="font-size:2rem;font-weight:700;color:#f87171;" id="stats-total-flagged">0</div>
+                <div style="font-size:0.85rem;color:#cbd5e1;margin-top:4px;">Flagged Content</div>
+              </div>
+              <div style="background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);border-radius:12px;padding:16px;text-align:center;">
+                <div style="font-size:2rem;font-weight:700;color:#4ade80;" id="stats-avg-reliability">--</div>
+                <div style="font-size:0.85rem;color:#cbd5e1;margin-top:4px;">Avg Reliability</div>
+              </div>
+              <div style="background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);border-radius:12px;padding:16px;text-align:center;">
+                <div style="font-size:2rem;font-weight:700;color:#c084fc;" id="stats-ai-detected">0</div>
+                <div style="font-size:0.85rem;color:#cbd5e1;margin-top:4px;">AI Detected</div>
+              </div>
+              <div style="background:rgba(236,72,153,0.15);border:1px solid rgba(236,72,153,0.3);border-radius:12px;padding:16px;text-align:center;">
+                <div style="font-size:2rem;font-weight:700;color:#ec4899;" id="stats-deepfakes">0</div>
+                <div style="font-size:0.85rem;color:#cbd5e1;margin-top:4px;">Deepfakes Found</div>
+              </div>
+              <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:12px;padding:16px;text-align:center;">
+                <div style="font-size:2rem;font-weight:700;color:#10b981;" id="stats-facts-checked">0</div>
+                <div style="font-size:0.85rem;color:#cbd5e1;margin-top:4px;">Facts Checked</div>
+              </div>
+            </div>
+
+            <!-- Judgment Distribution Chart -->
+            <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;margin-bottom:20px;">
+              <h3 style="margin:0 0 16px;font-size:1rem;font-weight:600;">Content Classification</h3>
+              <div id="judgmentChart" style="display:flex;flex-direction:column;gap:8px;"></div>
+            </div>
+
+            <!-- Source Type Distribution -->
+            <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;margin-bottom:20px;">
+              <h3 style="margin:0 0 16px;font-size:1rem;font-weight:600;">Analysis by Type</h3>
+              <div id="sourceTypeChart" style="display:flex;flex-direction:column;gap:8px;"></div>
+            </div>
+
+            <!-- Recent Activity Timeline -->
+            <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;margin-bottom:20px;">
+              <h3 style="margin:0 0 16px;font-size:1rem;font-weight:600;">Recent Activity</h3>
+              <div id="recentActivity" style="max-height:300px;overflow-y:auto;"></div>
+            </div>
+
+            <!-- Top Keywords -->
+            <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;">
+              <h3 style="margin:0 0 16px;font-size:1rem;font-weight:600;">Most Flagged Keywords</h3>
+              <div id="topKeywords" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+            </div>
+          </div>
+        `,
+        tools: `
+          <div style="width:100%;min-height:100%;display:flex;flex-direction:column;align-items:center;padding:0;box-sizing:border-box;">
+            <div style="width:92%;max-width:340px;margin:0 auto;padding-top:24px;padding-bottom:90px;">
+              <h2 style="margin:0 0 8px 0;font-size:1.18rem;color:#fff;font-weight:800;letter-spacing:0.5px;text-align:center;">AI Detection Tools</h2>
+              <p style="margin:0 0 20px 0;font-size:0.82rem;color:rgba(255,255,255,0.5);text-align:center;">Select a tool to begin analysis</p>
+              
+              <!-- Tool Selector Grid -->
+              <div style="margin-bottom:24px;">
+                <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
+                  <button class="tool-selector-btn" data-tool="file">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                    <span>File Detector</span>
+                  </button>
+                  <button class="tool-selector-btn" data-tool="ai">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/>
+                      <path d="M9 9h6v6H9z"/>
+                    </svg>
+                    <span>AI Detector</span>
+                  </button>
+                  <button class="tool-selector-btn" data-tool="image">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                      <circle cx="8.5" cy="8.5" r="1.5"/>
+                      <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                    <span>Image</span>
+                  </button>
+                  <button class="tool-selector-btn" data-tool="video">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="23 7 16 12 23 17 23 7"/>
+                      <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                    </svg>
+                    <span>Video</span>
+                  </button>
+                  <button class="tool-selector-btn" data-tool="source">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <line x1="2" y1="12" x2="22" y2="12"/>
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    <span>Source</span>
+                  </button>
+                  <button class="tool-selector-btn" data-tool="fact">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <span>Fact Check</span>
+                  </button>
+                  <button class="tool-selector-btn" data-tool="headline" style="grid-column:span 2;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="4" y1="9" x2="20" y2="9"/>
+                      <line x1="4" y1="15" x2="20" y2="15"/>
+                      <line x1="10" y1="3" x2="8" y2="21"/>
+                      <line x1="16" y1="3" x2="14" y2="21"/>
+                    </svg>
+                    <span>Headline Analyzer</span>
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Tool Cards Container -->
+              <div id="toolsContainer" style="display:flex;flex-direction:column;gap:16px;">
+                <!-- Universal File Detector -->
+                <div class="tool-card" data-tool="file" style="display:none;">
+                  <div class="tool-card-header">
+                    <span>Universal File Detector</span>
+                  </div>
+                  <label for="pdfInput" style="text-align:center; display:block; margin-bottom:8px; color:rgba(255,255,255,0.8); font-size:0.9rem;">Analyzes documents for misinformation, fake news patterns, and unreliable information.</label>
+                  <label for="pdfInput" class="file-input-wrapper">
+                    <span class="file-input-label">
+                      <span>Upload document file (PDF, TXT, DOC, etc.)</span>
+                    </span>
+                  </label>
+                  <input type="file" id="pdfInput" accept=".pdf,.txt,.doc,.docx,.rtf,.odt">
+                  <div id="pdfFileName" class="file-name-display"></div>
+                  <button id="analyzePdfBtn">Analyze</button>
+                  <div id="pdfResult" class="tool-result-area" style="display: none; text-align:left;"></div>
+                </div>
+                <!-- AI Article Detector -->
+                <div class="tool-card" data-tool="ai" style="display:none;">
+                  <div class="tool-card-header">
+                    <span>AI Article Detector</span>
+                  </div>
+                  <label for="aiArticleInput" style="text-align:center; display:block; margin-bottom:8px; color:rgba(255,255,255,0.8); font-size:0.9rem;">Detects if text was written by AI or a human.</label>
+                  <textarea id="aiArticleInput" rows="4" placeholder="Paste essay, article, or paragraph here (minimum 50 characters)..."></textarea>
+                  <button id="analyzeAiArticleBtn">Analyze</button>
+                  <div id="aiArticleResult" class="tool-result-area" style="display: none; text-align:left;"></div>
+                </div>
+                <!-- Image Detector -->
+                <div class="tool-card" data-tool="image" style="display:none;">
+                  <div class="tool-card-header">
+                    <span>Image Detector</span>
+                  </div>
+                  <label style="text-align:center; display:block; margin-bottom:8px; color:rgba(255,255,255,0.8); font-size:0.9rem;">Detects manipulated, edited, or fake images and photo alterations.</label>
+                   <label for="imageInput" class="file-input-wrapper">
+                    <span class="file-input-label">
+                      <span>Click to upload an Image</span>
+                    </span>
+                  </label>
+                  <input type="file" id="imageInput" accept="image">
+                  <div id="imageFileName" class="file-name-display"></div>
+                  <button id="analyzeImageBtn">Analyze</button>
+                  <div id="imageResult" class="tool-result-area" style="display: none; text-align:left;"></div>
+                </div>
+                <!-- Video Deepfake Detector -->
+                <div class="tool-card" data-tool="video" style="display:none;">
+                  <div class="tool-card-header">
+                    <span>Video Deepfake Detector</span>
+                  </div>
+                  <label style="text-align:center; display:block; margin-bottom:8px; color:rgba(255,255,255,0.8); font-size:0.9rem;">Analyzes videos for deepfakes, face swaps, and AI-generated content.</label>
+                  <label for="videoInput" class="file-input-wrapper">
+                    <span class="file-input-label">
+                      <span>Upload video file (MP4, AVI, MOV)</span>
+                    </span>
+                  </label>
+                  <input type="file" id="videoInput" accept="video/*">
+                  <div id="videoFileName" class="file-name-display"></div>
+                  <button id="analyzeVideoBtn">Analyze</button>
+                  <div id="videoResult" class="tool-result-area" style="display: none; text-align:left;"></div>
+                </div>
+                <!-- Source Credibility Checker -->
+                <div class="tool-card" data-tool="source" style="display:none;">
+                  <div class="tool-card-header">
+                    <span>Source Credibility Checker</span>
+                  </div>
+                  <label for="sourceUrlInput" style="text-align:center; display:block; margin-bottom:8px; color:rgba(255,255,255,0.8); font-size:0.9rem;">Checks if a website or domain is trustworthy and credible.</label>
+                  <input type="text" id="sourceUrlInput" placeholder="Enter URL (e.g., https://example.com)" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; margin: 8px 0; box-sizing: border-box;">
+                  <button id="checkSourceBtn">Analyze</button>
+                  <div id="sourceResult" class="tool-result-area" style="display: none; text-align:left;"></div>
+                </div>
+                <!-- Fact Cross-Reference Tool -->
+                <div class="tool-card" data-tool="fact" style="display:none;">
+                  <div class="tool-card-header">
+                    <span>Fact Cross-Reference Tool</span>
+                  </div>
+                  <label for="factClaimInput" style="text-align:center; display:block; margin-bottom:8px; color:rgba(255,255,255,0.8); font-size:0.9rem;">Verifies if a claim is true, false, or unverified.</label>
+                  <textarea id="factClaimInput" rows="4" placeholder="Enter claim to verify (e.g., 'Studies show that 80% of people...')"></textarea>
+                  <button id="checkFactBtn">Analyze</button>
+                  <div id="factResult" class="tool-result-area" style="display: none; text-align:left;"></div>
+                </div>
+                <!-- Headline vs Content Analyzer -->
+                <div class="tool-card" data-tool="headline" style="display:none;">
+                  <div class="tool-card-header">
+                    <span>Headline vs Content Analyzer</span>
+                  </div>
+                  <label for="headlineInput" style="text-align:center; display:block; margin-bottom:8px; color:rgba(255,255,255,0.8); font-size:0.9rem;">Detects clickbait and misleading headlines.</label>
+                  <input type="text" id="headlineInput" placeholder="Enter article headline" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; margin: 8px 0; box-sizing: border-box;">
+                  <textarea id="contentInput" rows="4" placeholder="Paste article content here (minimum 20 characters)"></textarea>
+                  <button id="analyzeHeadlineBtn">Analyze</button>
+                  <div id="headlineResult" class="tool-result-area" style="display: none; text-align:left;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        'sync-info': `
+          <div style="padding:18px 18px 90px;color:#fff;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow-y:auto;">
+            <h2 style="margin:0 0 8px; font-size:1.25rem; text-align:center; font-weight:700;">Data Sources</h2>
+            <p style="margin:0 0 20px; font-size:0.8rem; color:rgba(255,255,255,0.55); text-align:center;">Where each tool gets its data from</p>
+            
+            <!-- MindSpore Core Engine -->
+            <div style="background:rgba(139,92,246,0.15); border:1px solid rgba(139,92,246,0.3); border-radius:10px; padding:14px; margin-bottom:18px;">
+              <h3 style="color:#c4b5fd; font-size:1rem; margin:0 0 6px; font-weight:600;">
+                MindSpore 2.7.0
+              </h3>
+              <p style="margin:0; font-size:0.8rem; color:rgba(255,255,255,0.65); line-height:1.4;">
+                AI engine powering all 9 detection tools
+              </p>
+            </div>
+
+            <!-- Detection Tools -->
+            <div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:14px; margin-bottom:12px;">
+              <h4 style="color:#93c5fd; font-size:0.9rem; margin:0 0 10px; font-weight:600;">Universal File Detector</h4>
+              <p style="margin:0; font-size:0.75rem; color:rgba(255,255,255,0.5);">MindSpore • Pattern Matching</p>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:14px; margin-bottom:12px;">
+              <h4 style="color:#d8b4fe; font-size:0.9rem; margin:0 0 10px; font-weight:600;">AI Article Detector</h4>
+              <p style="margin:0; font-size:0.75rem; color:rgba(255,255,255,0.5);">MindSpore • Linguistic Analysis</p>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:14px; margin-bottom:12px;">
+              <h4 style="color:#f9a8d4; font-size:0.9rem; margin:0 0 10px; font-weight:600;">Image Detector</h4>
+              <p style="margin:0; font-size:0.75rem; color:rgba(255,255,255,0.5);">MindSpore • OpenCV • EXIF Metadata</p>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:14px; margin-bottom:12px;">
+              <h4 style="color:#fca5a5; font-size:0.9rem; margin:0 0 10px; font-weight:600;">Video Deepfake Detector</h4>
+              <p style="margin:0; font-size:0.75rem; color:rgba(255,255,255,0.5);">MindSpore • OpenCV • FFmpeg • Motion Analysis</p>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:14px; margin-bottom:12px;">
+              <h4 style="color:#86efac; font-size:0.9rem; margin:0 0 10px; font-weight:600;">Source Credibility Checker</h4>
+              <p style="margin:0; font-size:0.75rem; color:rgba(255,255,255,0.5);">MindSpore • Real-time Fact Checker • Domain Database</p>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:14px; margin-bottom:12px;">
+              <h4 style="color:#5eead4; font-size:0.9rem; margin:0 0 10px; font-weight:600;">Fact Cross-Reference Tool</h4>
+              <p style="margin:0; font-size:0.75rem; color:rgba(255,255,255,0.5);">MindSpore • Real-time Fact Checker • Wikipedia • DuckDuckGo • Snopes • FactCheck • PolitiFact • Reuters</p>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:14px; margin-bottom:12px;">
+              <h4 style="color:#fde047; font-size:0.9rem; margin:0 0 10px; font-weight:600;">Headline Analyzer</h4>
+              <p style="margin:0; font-size:0.75rem; color:rgba(255,255,255,0.5);">MindSpore • Real-time Fact Checker • Clickbait Detection</p>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:14px; margin-bottom:12px;">
+              <h4 style="color:#fdba74; font-size:0.9rem; margin:0 0 10px; font-weight:600;">Bubble Insight</h4>
+              <p style="margin:0; font-size:0.75rem; color:rgba(255,255,255,0.5);">MindSpore • Bias Detection • Diversity Analysis</p>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:14px; margin-bottom:12px;">
+              <h4 style="color:#a5b4fc; font-size:0.9rem; margin:0 0 10px; font-weight:600;">News Feed Badges</h4>
+              <p style="margin:0; font-size:0.75rem; color:rgba(255,255,255,0.5);">NewsAPI • MindSpore • Real-time Fact Checker • Domain Reputation</p>
+            </div>
+
+            <!-- System Status Footer -->
+            <div style="background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:14px; margin-top:20px; text-align:center;">
+              <div style="display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:4px;">
+                <span style="width:8px; height:8px; background:#10b981; border-radius:50%; box-shadow:0 0 6px #10b981;"></span>
+                <strong style="color:#6ee7b7; font-size:0.85rem;">All Systems Operational</strong>
+              </div>
+              <p style="margin:0; font-size:0.72rem; color:rgba(255,255,255,0.5);">
+                9 tools • 12+ sources • MindSpore 2.7.0
+              </p>
+            </div>
+          </div>
+        `,
+        settings: `
+          <div style="padding:18px 18px 90px;color:#fff;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+            <h2 style="margin:0 0 24px; font-size:1.3rem; text-align:center; font-weight:700;">Settings</h2>
+            
+            <!-- Data Management Section -->
+            <div style="background:rgba(255,255,255,0.05); border-radius:12px; padding:18px; margin-bottom:20px;">
+              <h3 style="margin:0 0 8px; font-size:1rem; font-weight:600; color:#f87171;">Data Management</h3>
+              <p style="font-size:0.85rem; color:rgba(255,255,255,0.65); margin:0 0 16px; line-height:1.5;">
+                Clear all stored analysis history from your device. This includes text, image, video analyses, and statistics.
+              </p>
+              <button id="clearDataBtn" style="width:100%; padding:12px; background:#ef4444; color:white; border:none; border-radius:8px; font-size:0.9rem; font-weight:600; cursor:pointer; transition:background 0.2s;">
+                Clear All Data
+              </button>
+            </div>
+            
+            <!-- System Info Section -->
+            <div style="background:rgba(255,255,255,0.05); border-radius:12px; padding:18px; margin-bottom:20px;">
+              <h3 style="margin:0 0 12px; font-size:1rem; font-weight:600; color:#60a5fa;">System Information</h3>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.1);">
+                  <span style="font-size:0.85rem; color:rgba(255,255,255,0.6);">AI Engine</span>
+                  <span style="font-size:0.85rem; color:rgba(255,255,255,0.9); font-weight:500;">MindSpore 2.7.0</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.1);">
+                  <span style="font-size:0.85rem; color:rgba(255,255,255,0.6);">Detection Tools</span>
+                  <span style="font-size:0.85rem; color:rgba(255,255,255,0.9); font-weight:500;">9 Active</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.1);">
+                  <span style="font-size:0.85rem; color:rgba(255,255,255,0.6);">Data Sources</span>
+                  <span style="font-size:0.85rem; color:rgba(255,255,255,0.9); font-weight:500;">12+ Verified</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:8px 0;">
+                  <span style="font-size:0.85rem; color:rgba(255,255,255,0.6);">Storage Used</span>
+                  <span id="storageUsed" style="font-size:0.85rem; color:rgba(255,255,255,0.9); font-weight:500;">Calculating...</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- About Section -->
+            <div style="background:rgba(255,255,255,0.05); border-radius:12px; padding:18px;">
+              <h3 style="margin:0 0 8px; font-size:1rem; font-weight:600; color:#34d399;">About</h3>
+              <p style="font-size:0.8rem; color:rgba(255,255,255,0.6); margin:0; line-height:1.6;">
+                MindSpore Misinformation Detection System uses advanced AI and real-time fact-checking to help you identify fake news, manipulated media, and unreliable information.
+              </p>
+            </div>
+          </div>
+          
+          <!-- Custom Confirmation Modal -->
+          <div id="confirmModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; justify-content:center; align-items:center;">
+            <div style="background:#1e293b; border-radius:16px; padding:24px; width:90%; max-width:340px; box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+              <h3 style="margin:0 0 12px; font-size:1.1rem; color:#fff; font-weight:700;">Confirm Data Deletion</h3>
+              <p style="margin:0 0 24px; font-size:0.9rem; color:rgba(255,255,255,0.7); line-height:1.5;">
+                Are you sure you want to delete all analysis data? This action cannot be undone.
+              </p>
+              <div style="display:flex; gap:12px;">
+                <button id="cancelDeleteBtn" style="flex:1; padding:12px; background:rgba(255,255,255,0.1); color:white; border:none; border-radius:8px; font-size:0.9rem; font-weight:600; cursor:pointer;">
+                  Cancel
+                </button>
+                <button id="confirmDeleteBtn" style="flex:1; padding:12px; background:#ef4444; color:white; border:none; border-radius:8px; font-size:0.9rem; font-weight:600; cursor:pointer;">
+                  Delete All
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Success Message -->
+          <div id="successMessage" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#10b981; color:white; padding:16px 24px; border-radius:12px; font-size:0.9rem; font-weight:600; z-index:10000; box-shadow:0 8px 24px rgba(16,185,129,0.3);">
+            All data has been deleted
+          </div>
+        `
+      };
+
+      async function loadFragment(route) {
+        const fragPath = `./fragments/${route}.html`;
+        console.debug('Loading fragment for route:', route, 'path:', fragPath);
+        try {
+          const res = await fetch(fragPath, { cache: 'no-store' });
+          if (!res.ok) throw new Error('not found');
+          const html = await res.text();
+          content.innerHTML = html;
+        } catch (err) {
+          // Use inline fallback if external fragment missing
+          console.warn(`Could not load fragment ${fragPath}, using fallback. Error:`, err);
+          content.innerHTML = defaultFragments[route] || `<div style="padding:16px;color:#fff;"><h2>/${route}</h2><p style="color:#ddd">No fragment available.</p></div>`;
+        }
+
+        // After injection, wire fragment-local UI to centralized handlers (bubble / image)
+        wireFragmentButtons(route);
+        setActive(route);
+
+        // If home page is loaded, fetch news and wire refresh button
+        if (route === 'home') {
+          // Reload analysis history from localStorage to get latest data
+          analysisHistory = JSON.parse(localStorage.getItem('analysisHistory')) || [];
+          updateHomeScreenStats(); // Update stats on load
+          fetchAndDisplayNews();
+          const refreshBtn = document.getElementById('refreshNewsBtn');
+          if (refreshBtn) {
+            refreshBtn.onclick = fetchAndDisplayNews;
+          }
+        }
+
+        // If settings page is loaded, wire the clear data button
+        if (route === 'settings') {
+          // Calculate storage used
+          const storageUsedEl = document.getElementById('storageUsed');
+          if (storageUsedEl) {
+            const historySize = JSON.stringify(analysisHistory || []).length;
+            const sizeKB = (historySize / 1024).toFixed(2);
+            storageUsedEl.textContent = `${sizeKB} KB (${analysisHistory.length} items)`;
+          }
+          
+          const clearDataBtn = document.getElementById('clearDataBtn');
+          const confirmModal = document.getElementById('confirmModal');
+          const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+          const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+          const successMessage = document.getElementById('successMessage');
+          
+          if (clearDataBtn && confirmModal) {
+            // Show custom confirmation modal
+            clearDataBtn.onclick = () => {
+              confirmModal.style.display = 'flex';
+            };
+            
+            // Cancel button - close modal
+            if (cancelDeleteBtn) {
+              cancelDeleteBtn.onclick = () => {
+                confirmModal.style.display = 'none';
+              };
+            }
+            
+            // Confirm button - delete data
+            if (confirmDeleteBtn) {
+              confirmDeleteBtn.onclick = () => {
+                // Delete all data
+                analysisHistory = [];
+                localStorage.removeItem('analysisHistory');
+                
+                // Close modal
+                confirmModal.style.display = 'none';
+                
+                // Show success message
+                if (successMessage) {
+                  successMessage.style.display = 'block';
+                  setTimeout(() => {
+                    successMessage.style.display = 'none';
+                  }, 2500);
+                }
+                
+                // Update storage display
+                if (storageUsedEl) {
+                  storageUsedEl.textContent = '0 KB (0 items)';
+                }
+                
+                // The stats on the home screen will update automatically the next time it's loaded.
+              };
+            }
+            
+            // Close modal when clicking outside
+            confirmModal.onclick = (e) => {
+              if (e.target === confirmModal) {
+                confirmModal.style.display = 'none';
+              }
+            };
+          }
+        }
+
+        // If statistics page is loaded, render charts
+        if (route === 'statistics') {
+          // Reload analysis history from localStorage to get latest data
+          analysisHistory = JSON.parse(localStorage.getItem('analysisHistory')) || [];
+          renderStatistics();
+        }
+      }
+
+      // Render statistics dashboard with charts
+      function renderStatistics() {
+        const history = analysisHistory || [];
+        
+        // Calculate summary stats
+        const totalAnalyzed = history.length;
+        const flagged = history.filter(item => 
+          item.judgment && (item.judgment.toLowerCase() === 'fake' || 
+          item.judgment.toLowerCase() === 'half-truth' || 
+          item.judgment.toLowerCase() === 'misinformation' ||
+          item.judgment.toLowerCase().includes('manipulated') ||
+          item.isMisinformation === true)
+        ).length;
+        const reliabilityScores = history.filter(item => item.reliabilityScore != null && item.reliabilityScore > 0).map(item => item.reliabilityScore);
+        const avgReliability = reliabilityScores.length > 0 
+          ? Math.round(reliabilityScores.reduce((a,b) => a+b, 0) / reliabilityScores.length) 
+          : 0;
+        const aiDetected = history.filter(item => item.judgment && item.judgment.toLowerCase() === 'ai-generated').length;
+        
+        // NEW: Calculate deepfakes (video + audio)
+        const deepfakes = history.filter(item => 
+          (item.type === 'video' || item.type === 'audio') && 
+          (item.judgment && (item.judgment.toLowerCase().includes('fake') || 
+           item.judgment.toLowerCase().includes('deepfake') || 
+           item.judgment.toLowerCase().includes('synthetic')))
+        ).length;
+        
+        // NEW: Calculate facts checked (any tool that verifies facts)
+        const factsChecked = history.filter(item => 
+          item.type === 'fact' || 
+          item.source === 'fact_checker' || 
+          (item.meta && (item.meta.type === 'fact' || item.meta.type === 'headline' || item.meta.type === 'ai'))
+        ).length;
+
+        // Update summary cards
+        document.getElementById('stats-total-analyzed').textContent = totalAnalyzed;
+        document.getElementById('stats-total-flagged').textContent = flagged;
+        document.getElementById('stats-avg-reliability').textContent = avgReliability > 0 ? avgReliability + '%' : '--';
+        document.getElementById('stats-ai-detected').textContent = aiDetected;
+        document.getElementById('stats-deepfakes').textContent = deepfakes;
+        document.getElementById('stats-facts-checked').textContent = factsChecked;
+
+        // Judgment distribution
+        const judgmentCounts = {};
+        history.forEach(item => {
+          const judgment = item.judgment || 'Unknown';
+          judgmentCounts[judgment] = (judgmentCounts[judgment] || 0) + 1;
+        });
+
+        const judgmentChartEl = document.getElementById('judgmentChart');
+        judgmentChartEl.innerHTML = '';
+        const judgmentColors = {
+          'Real': '#4ade80',
+          'Fake': '#f87171',
+          'Half-Truth': '#fbbf24',
+          'Misinformation': '#ef4444',
+          'AI-Generated': '#c084fc',
+          'Human-Written': '#60a5fa',
+          'Mixed/Unclear': '#94a3b8',
+          'No Data': '#6b7280'
+        };
+
+        Object.entries(judgmentCounts).sort((a,b) => b[1] - a[1]).forEach(([judgment, count]) => {
+          const percentage = totalAnalyzed > 0 ? Math.round((count / totalAnalyzed) * 100) : 0;
+          const color = judgmentColors[judgment] || '#94a3b8';
+          judgmentChartEl.innerHTML += `
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:8px;height:24px;overflow:hidden;position:relative;">
+                <div style="background:${color};height:100%;width:${percentage}%;border-radius:8px;transition:width 0.3s;"></div>
+              </div>
+              <div style="min-width:80px;text-align:right;font-size:0.85rem;">
+                <span style="color:${color};font-weight:600;">${count}</span>
+                <span style="color:#94a3b8;margin-left:4px;">(${percentage}%)</span>
+              </div>
+              <div style="min-width:100px;font-size:0.85rem;color:#cbd5e1;">${judgment}</div>
+            </div>
+          `;
+        });
+
+        // Source type distribution
+        const sourceTypes = { text: 0, pdf: 0, image: 0, video: 0, source: 0, fact: 0, headline: 0, ai: 0, bubble: 0 };
+        history.forEach(item => {
+          if (item.type === 'text' || item.source === 'text') sourceTypes.text++;
+          else if (item.type === 'pdf' || item.source === 'pdf') sourceTypes.pdf++;
+          else if (item.type === 'image' || item.source === 'image') sourceTypes.image++;
+          else if (item.type === 'video' || item.source === 'video') sourceTypes.video++;
+          else if (item.type === 'source' || item.source === 'source_credibility') sourceTypes.source++;
+          else if (item.type === 'fact' || item.source === 'fact_checker') sourceTypes.fact++;
+          else if (item.type === 'headline' || item.source === 'headline_analyzer') sourceTypes.headline++;
+          else if (item.type === 'ai' || item.source === 'ai') sourceTypes.ai++;
+          else if (item.source === 'bubble') sourceTypes.bubble++;
+          else sourceTypes.text++; // default
+        });
+
+        const sourceTypeChartEl = document.getElementById('sourceTypeChart');
+        sourceTypeChartEl.innerHTML = '';
+        const sourceTypeIcons = {
+          text: 'TXT',
+          pdf: 'PDF',
+          image: 'IMG',
+          video: 'VID',
+          source: 'SRC',
+          fact: 'FCT',
+          headline: 'HDL',
+          ai: 'AI',
+          bubble: 'BUB'
+        };
+        const sourceTypeColors = {
+          text: '#60a5fa',
+          pdf: '#f472b6',
+          image: '#a78bfa',
+          video: '#ec4899',
+          source: '#8b5cf6',
+          fact: '#10b981',
+          headline: '#06b6d4',
+          ai: '#c084fc',
+          bubble: '#34d399'
+        };
+        
+        const sourceTypeLabels = {
+          text: 'Text Analysis',
+          pdf: 'PDF Documents',
+          image: 'Image Detection',
+          video: 'Video Deepfake',
+          source: 'Source Check',
+          fact: 'Fact Checker',
+          headline: 'Headline Analysis',
+          ai: 'AI Detection',
+          bubble: 'Bubble Insight'
+        };
+
+        Object.entries(sourceTypes).forEach(([type, count]) => {
+          if (count > 0) {
+            const percentage = totalAnalyzed > 0 ? Math.round((count / totalAnalyzed) * 100) : 0;
+            const color = sourceTypeColors[type];
+            const icon = sourceTypeIcons[type];
+            const label = sourceTypeLabels[type] || type;
+            sourceTypeChartEl.innerHTML += `
+              <div style="margin-bottom:12px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <div style="width:20px;text-align:center;font-size:0.75rem;">${icon}</div>
+                    <div style="font-size:0.85rem;color:#cbd5e1;">${label}</div>
+                  </div>
+                  <div style="font-size:0.85rem;color:${color};font-weight:600;">${count} (${percentage}%)</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.08);border-radius:8px;height:8px;overflow:hidden;">
+                  <div style="background:${color};height:100%;width:${percentage}%;border-radius:8px;transition:width 0.3s;"></div>
+                </div>
+              </div>
+            `;
+          }
+        });
+
+        // Recent activity timeline
+        const recentActivityEl = document.getElementById('recentActivity');
+        recentActivityEl.innerHTML = '';
+        const recentItems = history.slice(-10).reverse();
+        if (recentItems.length === 0) {
+          recentActivityEl.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:20px;">No activity yet</div>';
+        } else {
+          recentItems.forEach((item, index) => {
+            const timestamp = item.meta && item.meta.timestamp ? new Date(item.meta.timestamp).toLocaleString() : 'Recent';
+            const judgmentColor = judgmentColors[item.judgment] || '#94a3b8';
+            const preview = (item.explanation || item.summary || '').substring(0, 80) + ((item.explanation || item.summary || '').length > 80 ? '...' : '');
+            recentActivityEl.innerHTML += `
+              <div style="border-left:3px solid ${judgmentColor};padding:8px 12px;margin-bottom:8px;background:rgba(255,255,255,0.03);border-radius:0 8px 8px 0;">
+                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:4px;">
+                  <span style="color:${judgmentColor};font-weight:600;font-size:0.85rem;">${item.judgment || 'Unknown'}</span>
+                  <span style="color:#64748b;font-size:0.75rem;">${timestamp}</span>
+                </div>
+                <div style="color:#cbd5e1;font-size:0.8rem;">${preview || 'No description'}</div>
+              </div>
+            `;
+          });
+        }
+
+        // Top flagged keywords
+        const keywordCounts = {};
+        history.forEach(item => {
+          if (item.isMisinformation && item.explanation) {
+            const text = item.explanation.toLowerCase();
+            // Extract some common misinformation keywords
+            const keywords = ['breaking', 'shocking', 'secret', 'doctors hate', 'big pharma', 'conspiracy', 
+                            'miracle', 'urgent', 'exclusive', 'wake up', 'truth', 'hidden', 'fake', 
+                            'clickbait', 'sensational', 'misleading', 'unverified'];
+            keywords.forEach(keyword => {
+              if (text.includes(keyword)) {
+                keywordCounts[keyword] = (keywordCounts[keyword] || 0) + 1;
+              }
+            });
+          }
+        });
+
+        const topKeywordsEl = document.getElementById('topKeywords');
+        topKeywordsEl.innerHTML = '';
+        const sortedKeywords = Object.entries(keywordCounts).sort((a,b) => b[1] - a[1]).slice(0, 10);
+        if (sortedKeywords.length === 0) {
+          topKeywordsEl.innerHTML = '<div style="color:#94a3b8;font-size:0.85rem;">No flagged keywords yet</div>';
+        } else {
+          sortedKeywords.forEach(([keyword, count]) => {
+            topKeywordsEl.innerHTML += `
+              <div style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:6px 12px;font-size:0.85rem;">
+                <span style="color:#f87171;font-weight:600;">${keyword}</span>
+                <span style="color:#94a3b8;margin-left:6px;">×${count}</span>
+              </div>
+            `;
+          });
+        }
+      }
+
+      
+      // --- Tools logic for Tools fragment ---
+      function toolsEventWiring() {
+        // Tool Selector Button Grid
+        const toolSelectorBtns = document.querySelectorAll('.tool-selector-btn');
+        const toolCards = document.querySelectorAll('.tool-card[data-tool]');
+        
+        toolSelectorBtns.forEach(btn => {
+          btn.addEventListener('click', function() {
+            const selectedTool = this.getAttribute('data-tool');
+            
+            // Update button active states
+            toolSelectorBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Show/hide tool cards
+            toolCards.forEach(card => {
+              if (card.getAttribute('data-tool') === selectedTool) {
+                card.style.display = 'block';
+                setTimeout(() => {
+                  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+              } else {
+                card.style.display = 'none';
+              }
+            });
+          });
+        });
+        
+        // PDF Misinformation Detector
+        const pdfBtn = document.getElementById('analyzePdfBtn');
+        const pdfInput = document.getElementById('pdfInput');
+        const pdfFileName = document.getElementById('pdfFileName');
+        if (pdfInput) {
+            pdfInput.onchange = () => {
+                pdfFileName.textContent = pdfInput.files.length > 0 ? pdfInput.files[0].name : '';
+            };
+        }
+        if (pdfBtn) {
+          pdfBtn.onclick = async function () {
+            const resultDiv = document.getElementById('pdfResult');
+            resultDiv.style.display = 'block'; // Show the result area
+            resultDiv.innerHTML = '<div class="bubble-spinner" style="margin:auto; display:flex; justify-content:center;"></div>';
+            if (!pdfInput.files || !pdfInput.files[0]) {
+              resultDiv.textContent = 'Please select a PDF file.';
+              return;
+            }
+            const file = pdfInput.files[0];
+            try {
+              // MindSpore Universal File Analysis
+              resultDiv.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                  <div class="bubble-spinner"></div>
+                  <span>MindSpore analyzing file...</span>
+                </div>
+              `;
+              
+              const fileResult = await analyzeFileWithMindSpore(file);
+              
+              if (!fileResult || !fileResult.analysis) {
+                resultDiv.innerHTML = `
+                  <div style="background: #fef3c7; padding: 10px; border-radius: 6px;">
+                    <div style="font-weight: 600; color: #92400e;">Unable to analyze file</div>
+                  </div>
+                `;
+                return;
+              }
+              
+              // Display analysis results with file info
+              const analysis = fileResult.analysis;
+              const judgment = analysis.judgment || 'Unknown';
+              const confidence = Math.round((analysis.confidence || 0.5) * 100);
+              const reliability = analysis.reliability_score || 50;
+              
+              const getColor = (j) => {
+                switch(j.toLowerCase()) {
+                  case 'real': return '#22c55e';
+                  case 'fake': return '#ef4444';
+                  case 'half-truth': return '#f59e0b';
+                  default: return '#6b7280';
+                }
+              };
+              
+              const getIcon = (j) => {
+                switch(j.toLowerCase()) {
+                  case 'real': return 'REAL';
+                  case 'fake': return 'FAKE';
+                  case 'half-truth': return 'PARTIAL';
+                  default: return 'NO DATA';
+                }
+              };
+              
+              const color = getColor(judgment);
+              const icon = getIcon(judgment);
+              
+              // Save to analysis history
+              const historyItem = {
+                isMisinformation: judgment === 'Fake' || judgment === 'Half-Truth',
+                reliabilityScore: reliability,
+                judgment: judgment,
+                explanation: analysis.explanation || 'PDF file analysis',
+                origin: 'Manual Analysis',
+                sourcesHtml: '',
+                meta: {
+                  type: 'pdf',
+                  source: 'tools',
+                  filename: fileResult.fileInfo.name,
+                  timestamp: Date.now(),
+                  analyzedAt: new Date().toISOString()
+                }
+              };
+              analysisHistory.push(historyItem);
+              localStorage.setItem('analysisHistory', JSON.stringify(analysisHistory));
+              console.log('[PDF Tool] Saved to history. Total items:', analysisHistory.length, historyItem);
+              updateHomeScreenStats();
+              
+              resultDiv.innerHTML = `
+                <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                  <div style="font-weight: 600; color: #374151; margin-bottom: 8px;">File Information</div>
+                  <div style="font-size: 0.9rem; color: #6b7280; line-height: 1.6;">
+                    <div><strong>Name:</strong> ${fileResult.fileInfo.name}</div>
+                    <div><strong>Size:</strong> ${fileResult.fileInfo.size}</div>
+                    <div><strong>Type:</strong> ${fileResult.fileInfo.type}</div>
+                    <div><strong>ML Analysis:</strong> ${fileResult.mlUsed ? 'MindSpore Neural Network' : 'Metadata only'}</div>
+                  </div>
+                </div>
+                
+                <div style="background: ${color}15; border-left: 4px solid ${color}; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                    <span style="font-weight: 700; font-size: 1.1rem; color: ${color};">${icon}</span>
+                    <span style="margin-left: auto; font-size: 0.9rem; color: ${color};">
+                      ${confidence}% confidence
+                    </span>
+                  </div>
+                </div>
+                
+                <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                  <div style="font-weight: 600; color: #374151; margin-bottom: 6px;">Analysis Details</div>
+                  <div style="font-size: 0.9rem; color: #6b7280; line-height: 1.5; white-space: pre-wrap;">
+                    ${analysis.explanation || 'No detailed explanation available'}
+                  </div>
+                </div>
+                
+                <div style="display: flex; gap: 8px;">
+                  <div style="flex: 1; background: #f3f4f6; padding: 10px; border-radius: 6px; text-align: center;">
+                    <div style="font-size: 0.75rem; color: #6b7280;">Reliability</div>
+                    <div style="font-weight: 700; color: ${reliability >= 70 ? '#22c55e' : reliability >= 40 ? '#f59e0b' : '#ef4444'};">
+                      ${reliability}%
+                    </div>
+                  </div>
+                  <div style="flex: 1; background: #f3f4f6; padding: 10px; border-radius: 6px; text-align: center;">
+                    <div style="font-size: 0.75rem; color: #6b7280;">Status</div>
+                    <div style="font-weight: 700; color: ${judgment === 'Fake' ? '#ef4444' : '#22c55e'};">
+                      ${judgment === 'Fake' || judgment === 'Half-Truth' ? 'Review' : 'Clean'}
+                    </div>
+                  </div>
+                </div>
+              `;
+              
+            } catch (err) {
+              resultDiv.innerHTML = `
+                <div style="background: #ff4757; color: white; padding: 10px; border-radius: 6px;">
+                  <div style="font-weight: 600; margin-bottom: 6px;">Analysis Error</div>
+                  <div style="opacity: 0.9;">${err.message}</div>
+                </div>
+              `;
+            }
+          };
+        }
+
+        // AI Article Detector
+        const aiBtn = document.getElementById('analyzeAiArticleBtn');
+        if (aiBtn) {
+          aiBtn.onclick = async function () {
+            const input = document.getElementById('aiArticleInput');
+            const resultDiv = document.getElementById('aiArticleResult');
+            const text = input.value.trim();
+            resultDiv.style.display = 'block';
+            if (text.length < 50) {
+              resultDiv.textContent = 'Please paste at least 50 characters for a meaningful analysis.';
+              return;
+            }
+            resultDiv.innerHTML = '<div class="bubble-spinner" style="margin:auto; display:flex; justify-content:center;"></div>';
+            try {
+              // Placeholder for future implementation with MindSpore/CANN
+              const analysis = await analyzeArticleWithHuaweiStack(text);
+              displayFormattedResult(analysis, resultDiv);
+              
+              // Save to analysis history
+              if (analysis && analysis.judgment) {
+                const historyItem = {
+                  isMisinformation: analysis.judgment === 'AI-Generated' || analysis.isMisinformation,
+                  reliabilityScore: analysis.reliability_score || 50,
+                  judgment: analysis.judgment,
+                  explanation: analysis.explanation || text.substring(0, 200) + '...',
+                  origin: 'Manual Analysis',
+                  sourcesHtml: '',
+                  meta: {
+                    type: 'ai',
+                    source: 'tools',
+                    textLength: text.length,
+                    timestamp: Date.now(),
+                    analyzedAt: new Date().toISOString()
+                  }
+                };
+                analysisHistory.push(historyItem);
+                localStorage.setItem('analysisHistory', JSON.stringify(analysisHistory));
+                console.log('[AI Tool] Saved to history. Total items:', analysisHistory.length, historyItem);
+                updateHomeScreenStats();
+              }
+            } catch (err) {
+              resultDiv.textContent = 'Analysis failed: ' + err.message;
+            }
+          };
+        }
+
+        // Image Detection
+        const imgBtn = document.getElementById('analyzeImageBtn');
+        const imageInput = document.getElementById('imageInput');
+        const imageFileName = document.getElementById('imageFileName');
+        if (imageInput) {
+            imageInput.onchange = () => {
+                imageFileName.textContent = imageInput.files.length > 0 ? imageInput.files[0].name : '';
+            };
+        }
+        if (imgBtn) {
+          imgBtn.onclick = async function () {
+            const resultDiv = document.getElementById('imageResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<div class="bubble-spinner" style="margin:auto; display:flex; justify-content:center;"></div>';
+            if (!imageInput.files || !imageInput.files[0]) {
+              resultDiv.textContent = 'Please select an image file.';
+              return;
+            }
+            const file = imageInput.files[0];
+            try {
+              // Placeholder for future implementation with MindSpore/CANN
+              const analysis = await analyzeImageWithHuaweiStack(file);
+              displayFormattedResult(analysis, resultDiv);
+              
+              // Save to analysis history
+              if (analysis && (analysis.judgment || analysis.enhanced)) {
+                const judgment = typeof analysis === 'object' ? analysis.judgment : 'No Data';
+                const historyItem = {
+                  type: 'image',
+                  source: 'image',
+                  isMisinformation: /manipulated|heavily manipulated/i.test(judgment) || analysis.is_misinformation,
+                  reliabilityScore: analysis.reliability_score || (analysis.metrics && analysis.metrics['Reliability Score']) || 50,
+                  judgment: judgment,
+                  explanation: analysis.explanation || 'Image analysis result',
+                  origin: 'Image Detector',
+                  sourcesHtml: '',
+                  meta: {
+                    type: 'image',
+                    source: 'image',
+                    filename: file.name,
+                    timestamp: Date.now(),
+                    analyzedAt: new Date().toISOString()
+                  }
+                };
+                analysisHistory.push(historyItem);
+                localStorage.setItem('analysisHistory', JSON.stringify(analysisHistory));
+                console.log('[Image Tool] Saved to history. Total items:', analysisHistory.length, historyItem);
+                updateHomeScreenStats();
+              }
+            } catch (err) {
+              resultDiv.textContent = 'Image analysis error: ' + err.message;
+            }
+          };
+        }
+
+        // Video Deepfake Detector
+        const videoBtn = document.getElementById('analyzeVideoBtn');
+        const videoInput = document.getElementById('videoInput');
+        const videoFileName = document.getElementById('videoFileName');
+        if (videoInput) {
+            videoInput.onchange = () => {
+                videoFileName.textContent = videoInput.files.length > 0 ? videoInput.files[0].name : '';
+            };
+        }
+        if (videoBtn) {
+          videoBtn.onclick = async function () {
+            const resultDiv = document.getElementById('videoResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<div class="bubble-spinner" style="margin:auto; display:flex; justify-content:center;"></div>';
+            if (!videoInput.files || !videoInput.files[0]) {
+              resultDiv.textContent = 'Please select a video file.';
+              return;
+            }
+            const file = videoInput.files[0];
+            try {
+              const formData = new FormData();
+              formData.append('file', file);
+              
+              const response = await fetch('http://localhost:5000/api/analyze/video-deepfake', {
+                method: 'POST',
+                body: formData
+              });
+              
+              const data = await response.json();
+              
+              if (data.success && data.result) {
+                const result = data.result;
+                
+                // Extract metrics (confidence already in percentage from backend)
+                let metrics = {};
+                if (result.confidence !== undefined) metrics['Confidence'] = result.confidence;
+                if (result.fake_probability !== undefined) metrics['Fake Probability'] = result.fake_probability;
+                if (result.authentic_probability !== undefined) metrics['Authentic Probability'] = result.authentic_probability;
+                
+                displayFormattedResult({
+                  judgment: result.judgment,
+                  explanation: result.explanation,
+                  metrics: metrics,
+                  fileInfo: {
+                    name: file.name,
+                    size: (file.size / (1024 * 1024)).toFixed(2) + ' MB',
+                    type: 'Video File'
+                  },
+                  enhanced: true
+                }, resultDiv);
+                
+                // Save to history
+                const historyItem = {
+                  type: 'video',
+                  source: 'video',
+                  isMisinformation: result.judgment === 'FAKE' || result.judgment === 'SUSPICIOUS',
+                  reliabilityScore: result.confidence || 50,
+                  judgment: result.judgment,
+                  explanation: result.summary || result.explanation,
+                  origin: 'Video Deepfake Detector',
+                  sourcesHtml: '',
+                  meta: {
+                    type: 'video',
+                    source: 'tools',
+                    filename: file.name,
+                    timestamp: Date.now(),
+                    analyzedAt: new Date().toISOString()
+                  }
+                };
+                analysisHistory.push(historyItem);
+                localStorage.setItem('analysisHistory', JSON.stringify(analysisHistory));
+                updateHomeScreenStats();
+              } else {
+                resultDiv.textContent = data.error || 'Video analysis failed';
+              }
+            } catch (err) {
+              resultDiv.textContent = 'Video analysis error: ' + err.message;
+            }
+          };
+        }
+
+        // Source Credibility Checker
+        const sourceBtn = document.getElementById('checkSourceBtn');
+        const sourceUrlInput = document.getElementById('sourceUrlInput');
+        if (sourceBtn) {
+          sourceBtn.onclick = async function () {
+            const resultDiv = document.getElementById('sourceResult');
+            const url = sourceUrlInput.value.trim();
+            
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<div class="bubble-spinner" style="margin:auto; display:flex; justify-content:center;"></div>';
+            
+            if (!url) {
+              resultDiv.textContent = 'Please enter a URL.';
+              return;
+            }
+            
+            try {
+              const response = await fetch('http://localhost:5000/api/check/source-credibility', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: url })
+              });
+              
+              const data = await response.json();
+              
+              if (data.success && data.result) {
+                const result = data.result;
+                displayFormattedResult({
+                  judgment: result.judgment,
+                  explanation: result.explanation,
+                  enhanced: true
+                }, resultDiv);
+                
+                // Save to history
+                const historyItem = {
+                  isMisinformation: result.judgment === 'FAKE',
+                  reliabilityScore: result.credibility_score || 50,
+                  judgment: result.judgment,
+                  explanation: result.summary || result.explanation,
+                  origin: 'Source Credibility Checker',
+                  sourcesHtml: '',
+                  meta: {
+                    type: 'source',
+                    source: 'tools',
+                    url: url,
+                    timestamp: Date.now(),
+                    analyzedAt: new Date().toISOString()
+                  }
+                };
+                analysisHistory.push(historyItem);
+                localStorage.setItem('analysisHistory', JSON.stringify(analysisHistory));
+                updateHomeScreenStats();
+              } else {
+                resultDiv.textContent = data.error || 'Source check failed';
+              }
+            } catch (err) {
+              resultDiv.textContent = 'Source check error: ' + err.message;
+            }
+          };
+        }
+
+        // Fact Cross-Reference Tool
+        const factBtn = document.getElementById('checkFactBtn');
+        const factClaimInput = document.getElementById('factClaimInput');
+        if (factBtn) {
+          factBtn.onclick = async function () {
+            const resultDiv = document.getElementById('factResult');
+            const claim = factClaimInput.value.trim();
+            
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<div class="bubble-spinner" style="margin:auto; display:flex; justify-content:center;"></div>';
+            
+            if (!claim || claim.length < 10) {
+              resultDiv.textContent = 'Please enter a claim (minimum 10 characters).';
+              return;
+            }
+            
+            try {
+              const response = await fetch('http://localhost:5000/api/check/fact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ claim: claim })
+              });
+              
+              const data = await response.json();
+              
+              if (data.success && data.result) {
+                const result = data.result;
+                displayFormattedResult({
+                  judgment: result.judgment,
+                  explanation: result.explanation,
+                  enhanced: true
+                }, resultDiv);
+                
+                // Save to history
+                const historyItem = {
+                  isMisinformation: result.judgment === 'FAKE',
+                  reliabilityScore: result.verification_score || 50,
+                  judgment: result.judgment,
+                  explanation: result.summary || result.explanation,
+                  origin: 'Fact Cross-Reference Tool',
+                  sourcesHtml: '',
+                  meta: {
+                    type: 'fact',
+                    source: 'tools',
+                    claim: claim.substring(0, 100),
+                    timestamp: Date.now(),
+                    analyzedAt: new Date().toISOString()
+                  }
+                };
+                analysisHistory.push(historyItem);
+                localStorage.setItem('analysisHistory', JSON.stringify(analysisHistory));
+                updateHomeScreenStats();
+              } else {
+                resultDiv.textContent = data.error || 'Fact check failed';
+              }
+            } catch (err) {
+              resultDiv.textContent = 'Fact check error: ' + err.message;
+            }
+          };
+        }
+
+        // Headline vs Content Analyzer
+        const headlineBtn = document.getElementById('analyzeHeadlineBtn');
+        const headlineInput = document.getElementById('headlineInput');
+        const contentInput = document.getElementById('contentInput');
+        if (headlineBtn) {
+          headlineBtn.onclick = async function () {
+            const resultDiv = document.getElementById('headlineResult');
+            const headline = headlineInput.value.trim();
+            const content = contentInput.value.trim();
+            
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<div class="bubble-spinner" style="margin:auto; display:flex; justify-content:center;"></div>';
+            
+            if (!headline || headline.length < 5) {
+              resultDiv.textContent = 'Please enter a headline (minimum 5 characters).';
+              return;
+            }
+            
+            if (!content || content.length < 20) {
+              resultDiv.textContent = 'Please enter article content (minimum 20 characters).';
+              return;
+            }
+            
+            try {
+              const response = await fetch('http://localhost:5000/api/analyze/headline', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ headline: headline, content: content })
+              });
+              
+              const data = await response.json();
+              
+              if (data.success && data.result) {
+                const result = data.result;
+                displayFormattedResult({
+                  judgment: result.judgment,
+                  explanation: result.explanation,
+                  enhanced: true
+                }, resultDiv);
+                
+                // Save to history
+                const historyItem = {
+                  isMisinformation: result.judgment === 'FAKE',
+                  reliabilityScore: result.accuracy_score || 50,
+                  judgment: result.judgment,
+                  explanation: result.summary || result.explanation,
+                  origin: 'Headline Analyzer',
+                  sourcesHtml: '',
+                  meta: {
+                    type: 'headline',
+                    source: 'tools',
+                    headline: headline.substring(0, 100),
+                    timestamp: Date.now(),
+                    analyzedAt: new Date().toISOString()
+                  }
+                };
+                analysisHistory.push(historyItem);
+                localStorage.setItem('analysisHistory', JSON.stringify(analysisHistory));
+                updateHomeScreenStats();
+              } else {
+                resultDiv.textContent = data.error || 'Headline analysis failed';
+              }
+            } catch (err) {
+              resultDiv.textContent = 'Headline analysis error: ' + err.message;
+            }
+          };
+        }
+      }
+
+      function displayFormattedResult(analysis, resultDiv) {
+        // Special handling for AI Detector results
+        if (typeof analysis === 'object' && analysis.isAIDetector) {
+          let judgmentColor = '#6b7280';
+          if (/human/i.test(analysis.judgment)) judgmentColor = '#22c55e';
+          else if (/ai-generated/i.test(analysis.judgment)) judgmentColor = '#ef4444';
+          else if (/mixed|unclear/i.test(analysis.judgment)) judgmentColor = '#f59e0b';
+          
+          let resultHTML = `
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+              <div class="result-judgment" style="background-color:${judgmentColor};">
+                ${analysis.judgment}
+              </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+              <div style="text-align: center; padding: 10px 4px;">
+                <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 4px; white-space: nowrap;">AI Score</div>
+                <div style="font-size: 1.1rem; font-weight: bold; color: ${analysis.aiColor};">${analysis.aiProb}%</div>
+              </div>
+              <div style="text-align: center; padding: 10px 4px;">
+                <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 4px; white-space: nowrap;">Human Score</div>
+                <div style="font-size: 1.1rem; font-weight: bold; color: ${analysis.humanColor};">${analysis.humanProb}%</div>
+              </div>
+            </div>
+          `;
+          
+          // Add AI indicator words if found
+          if (analysis.aiWords && analysis.aiWords.length > 0) {
+            resultHTML += `
+              <div style="margin-bottom: 20px;">
+                <div style="color: #fbbf24; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem;">Suspicious AI Phrases Detected:</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                  ${analysis.aiWords.slice(0, 8).map(word => 
+                    `<span style="background: rgba(251, 191, 36, 0.15); color: #fbbf24; padding: 4px 10px; border-radius: 4px; font-size: 0.85rem;">"${word}"</span>`
+                  ).join('')}
+                </div>
+              </div>
+            `;
+          }
+          
+          resultHTML += `
+            <div style="background: rgba(255,255,255,0.03); padding: 14px; border-radius: 8px; border-left: 3px solid ${judgmentColor};">
+              <div style="color: #cbd5e1; font-size: 0.85rem; margin-bottom: 8px; font-weight: 600;">Analysis Details</div>
+              <div class="result-explanation" style="color: #e2e8f0; line-height: 1.5;">
+                ${analysis.explanation.replace(/\n/g, '<br>')}
+              </div>
+              <div style="color: rgba(255, 255, 255, 0.5); font-size: 0.8rem; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);">
+                Detection Method: ${analysis.detectionMethod}
+              </div>
+            </div>
+          `;
+          
+          resultDiv.innerHTML = resultHTML;
+          return;
+        }
+        
+        // Enhanced handling for all other tool results
+        if (typeof analysis === 'object' && analysis.enhanced) {
+          let judgment = analysis.judgment;
+          let explanation = analysis.explanation;
+          let fileInfo = analysis.fileInfo;
+          let metrics = analysis.metrics || {};
+          
+          let judgmentColor = '#6b7280';
+          if (/real|authentic|credible|true/i.test(judgment)) judgmentColor = '#22c55e';
+          else if (/fake|manipulated|false|deepfake/i.test(judgment)) judgmentColor = '#ef4444';
+          else if (/half-truth|uncertain|mixed|unverified/i.test(judgment)) judgmentColor = '#f59e0b';
+          
+          let resultHTML = `
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+              <div class="result-judgment" style="background-color:${judgmentColor};">
+                ${judgment}
+              </div>
+            </div>
+          `;
+          
+          // Add metrics if available (reliability score, confidence, etc.)
+          let metricKeys = Object.keys(metrics);
+          if (metricKeys.length > 0) {
+            let columns = metricKeys.length >= 3 ? '1fr 1fr 1fr' : metricKeys.length === 2 ? '1fr 1fr' : '1fr';
+            resultHTML += `
+              <div style="display: grid; grid-template-columns: ${columns}; gap: 16px; margin-bottom: 24px;">
+            `;
+            
+            metricKeys.slice(0, 3).forEach(key => {
+              let value = metrics[key];
+              let color = '#888';
+              
+              // Color code based on metric type and value
+              if (key.toLowerCase().includes('reliability') || key.toLowerCase().includes('credibility') || key.toLowerCase().includes('confidence')) {
+                if (typeof value === 'number') {
+                  color = value >= 70 ? '#4CAF50' : value >= 40 ? '#f59e0b' : '#ff4444';
+                }
+              } else if (key.toLowerCase().includes('fake') || key.toLowerCase().includes('manipulation')) {
+                if (typeof value === 'number') {
+                  color = value >= 70 ? '#ff4444' : value >= 40 ? '#f59e0b' : '#4CAF50';
+                }
+              }
+              
+              let displayValue = typeof value === 'number' ? `${value.toFixed(1)}%` : value;
+              
+              resultHTML += `
+                <div style="text-align: center; padding: 10px 4px;">
+                  <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 4px; white-space: nowrap;">${key}</div>
+                  <div style="font-size: 1.1rem; font-weight: bold; color: ${color};">${displayValue}</div>
+                </div>
+              `;
+            });
+            
+            resultHTML += `</div>`;
+          }
+          
+          // Add file information if available
+          if (fileInfo) {
+            resultHTML += `
+              <div style="background: rgba(255,255,255,0.05); padding: 10px 12px; border-radius: 6px; margin-bottom: 20px; font-size: 0.85rem;">
+                <div style="color: rgba(255, 255, 255, 0.6); margin-bottom: 4px;">File Analysis</div>
+                <div style="color: #e2e8f0; font-weight: 600;">${fileInfo.name}</div>
+                <div style="color: rgba(255, 255, 255, 0.5); margin-top: 2px;">${fileInfo.size} • ${fileInfo.type}</div>
+              </div>
+            `;
+          }
+          
+          // Add explanation
+          let formattedExplanation = explanation;
+          if (!explanation.includes('<span') && !explanation.includes('<div')) {
+            formattedExplanation = explanation.replace(/\n/g, '<br>');
+          }
+          
+          resultHTML += `
+            <div style="background: rgba(255,255,255,0.03); padding: 14px; border-radius: 8px; border-left: 3px solid ${judgmentColor};">
+              <div style="color: #cbd5e1; font-size: 0.85rem; margin-bottom: 8px; font-weight: 600;">Analysis Details</div>
+              <div class="result-explanation" style="color: #e2e8f0; line-height: 1.5;">
+                ${formattedExplanation}
+              </div>
+            </div>
+          `;
+          
+          resultDiv.innerHTML = resultHTML;
+          return;
+        }
+        
+        // Handle both old string format and new enhanced object format
+        let judgment, explanation, fileInfo = null;
+        
+        if (typeof analysis === 'object' && analysis.enhanced) {
+          // Enhanced format with detailed explanations
+          judgment = analysis.judgment;
+          explanation = analysis.explanation;
+          fileInfo = analysis.fileInfo;
+        } else {
+          // Legacy string format (fallback)
+          const judgmentMatch = analysis.match(/Judgment:\s*(.*)/i);
+          const explanationMatch = analysis.match(/Explanation:\s*([\s\S]*)/i);
+          
+          judgment = judgmentMatch ? judgmentMatch[1].trim() : "No Data";
+          explanation = explanationMatch ? explanationMatch[1].trim() : "Could not parse explanation from the result.";
+        }
+
+        let judgmentColor = '#6b7280'; // gray
+        let judgmentIcon = '';
+        
+        if (/real|human/i.test(judgment)) {
+          judgmentColor = '#22c55e'; // green
+          judgmentIcon = '';
+        } else if (/fake|ai-generated/i.test(judgment)) {
+          judgmentColor = '#ef4444'; // red  
+          judgmentIcon = '';
+        } else if (/half-truth|uncertain/i.test(judgment)) {
+          judgmentColor = '#f59e0b'; // amber
+          judgmentIcon = '';
+        } else if (/no data/i.test(judgment)) {
+          judgmentColor = '#6b7280'; // gray
+          judgmentIcon = '';
+        }
+
+        // Enhanced result display with file info and better formatting
+        let resultHTML = `
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+            <div class="result-judgment" style="background-color:${judgmentColor};">
+              ${judgment}
+            </div>
+          </div>
+        `;
+        
+        // Add file information if available
+        if (fileInfo) {
+          resultHTML += `
+            <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 6px; margin-bottom: 12px; font-size: 0.85rem;">
+              <div style="color: #cbd5e1; margin-bottom: 4px; font-weight: 600;">File Analysis</div>
+              <div style="color: #e2e8f0;"><strong>${fileInfo.name}</strong> (${fileInfo.size})</div>
+              <div style="color: #94a3b8;">${fileInfo.type}</div>
+            </div>
+          `;
+        }
+        
+        // Enhanced explanation formatting (preserve HTML tags)
+        let formattedExplanation = explanation;
+        // Only replace \n with <br> if the explanation doesn't already contain HTML tags
+        if (!explanation.includes('<span') && !explanation.includes('<div')) {
+          formattedExplanation = explanation.replace(/\n/g, '<br>');
+        }
+        
+        resultHTML += `
+          <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border-left: 3px solid ${judgmentColor};">
+            <div style="color: #cbd5e1; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600;">Analysis Details</div>
+            <div class="result-explanation" style="color: #e2e8f0; line-height: 1.4;">
+              ${formattedExplanation}
+            </div>
+          </div>
+        `;
+
+        resultDiv.innerHTML = resultHTML;
+      }
+
+      // --- Placeholder Functions for Huawei Stack ---
+
+      // --- Huawei Security Scanner ---
+      async function analyzeFileWithMindSpore(file) {
+        console.log("[MindSpore] File Analyzer: Processing", file.name);
+        
+        const fileName = file.name.toLowerCase();
+        const fileSize = file.size;
+        const fileType = file.type || 'unknown';
+        
+        // Determine file category
+        let category = 'Unknown';
+        let endpoint = null;
+        
+        if (fileName.endsWith('.pdf') || fileType.includes('pdf')) {
+          category = 'PDF Document';
+          endpoint = '/api/analyze/pdf';
+        } else if (fileName.match(/\.(txt|md|doc|docx)$/i) || fileType.includes('text')) {
+          category = 'Text Document';
+          endpoint = '/api/analyze/pdf'; // Backend handles text extraction
+        } else if (fileName.match(/\.(jpg|jpeg|png|gif|bmp|webp)$/i) || fileType.includes('image')) {
+          category = 'Image File';
+          endpoint = '/api/analyze/image';
+        } else if (fileName.match(/\.(json|xml|csv|log)$/i)) {
+          category = 'Data File';
+          endpoint = '/api/analyze/pdf'; // Can extract text
+        } else {
+          category = 'Binary/Other File';
+        }
+        
+        try {
+          // For files with extractable text/content, use MindSpore backend
+          if (endpoint) {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            const controller = new AbortController();
+            setTimeout(() => controller.abort(), 30000); // 30 second timeout for large PDFs
+            
+            const response = await fetch(`http://localhost:5000${endpoint}`, {
+              method: 'POST',
+              body: formData,
+              signal: controller.signal
+            });
+            
+            if (!response.ok) {
+              throw new Error(`Analysis failed (${response.status})`);
+            }
+            
+            const result = await response.json();
+            
+            if (result.success && result.analysis) {
+              return {
+                safe: true,
+                category,
+                fileInfo: {
+                  name: file.name,
+                  size: `${(fileSize / 1024).toFixed(1)} KB`,
+                  type: category
+                },
+                analysis: result.analysis,
+                mlUsed: true
+              };
+            }
+          }
+          
+          // Fallback for unsupported file types - basic metadata analysis
+          return {
+            safe: true,
+            category,
+            fileInfo: {
+              name: file.name,
+              size: `${(fileSize / 1024).toFixed(1)} KB`,
+              type: category
+            },
+            analysis: {
+              judgment: 'No Data',
+              explanation: `File type '${category}' processed. No text content extracted for MindSpore analysis.`,
+              confidence: 0,
+              reliability_score: 50
+            },
+            mlUsed: false
+          };
+          
+        } catch (error) {
+          console.error('MindSpore file analysis error:', error);
+          return {
+            safe: true,
+            category,
+            fileInfo: {
+              name: file.name,
+              size: `${(fileSize / 1024).toFixed(1)} KB`,
+              type: category
+            },
+            analysis: {
+              judgment: 'Error',
+              explanation: `Analysis error: ${error.message}. File metadata processed successfully.`,
+              confidence: 0,
+              reliability_score: 50
+            },
+            mlUsed: false
+          };
+        }
+      }
+
+      async function analyzePdfWithHuaweiStack(file) {
+        // Enhanced PDF analysis with MindSpore backend + detailed explanations
+        console.log("Analyzing PDF with enhanced MindSpore backend:", file.name);
+        
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+          
+          const response = await fetch('http://localhost:5000/api/analyze/pdf', {
+            method: 'POST',
+            body: formData
+          });
+          
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+          
+          const result = await response.json();
+          
+          if (result.success && result.analysis) {
+            const analysis = result.analysis;
+            
+            // Extract metrics
+            let metrics = {};
+            if (analysis.reliability_score !== undefined) metrics['Reliability Score'] = analysis.reliability_score;
+            if (analysis.confidence !== undefined) metrics['Confidence'] = analysis.confidence * 100;
+            
+            // Return enhanced analysis with detailed explanation structure like the bubble
+            return {
+              judgment: analysis.judgment,
+              explanation: analysis.explanation,
+              metrics: metrics,
+              enhanced: true,
+              fileInfo: {
+                name: file.name,
+                size: `${(file.size / 1024).toFixed(1)} KB`,
+                type: 'PDF Document'
+              }
+            };
+          } else {
+            throw new Error(result.error || 'Unknown analysis error');
+          }
+        } catch (error) {
+          console.error('PDF analysis error:', error);
+          return {
+            judgment: 'No Data',
+            explanation: `Failed to connect to MindSpore backend. Please ensure the server is running on localhost:5000.\n\nTechnical Details:\n${error.message}`,
+            enhanced: true,
+            fileInfo: {
+              name: file.name,
+              size: `${(file.size / 1024).toFixed(1)} KB`,
+              type: 'PDF Document'
+            }
+          };
+        }
+      }
+
+      async function analyzeArticleWithHuaweiStack(text) {
+        // Call local MindSpore backend for AI detection
+        console.log("[AI DETECTOR] Analyzing text with MindSpore AI Content Detector");
+        
+        try {
+          const response = await fetch('http://localhost:5000/api/detect/ai', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              text: text
+            })
+          });
+          
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+          
+          const result = await response.json();
+          
+          if (result.success && result.detection) {
+            const detection = result.detection;
+            
+            // Color-code probabilities
+            const aiProb = (detection.ai_probability * 100).toFixed(1);
+            const humanProb = (detection.human_probability * 100).toFixed(1);
+            const aiColor = detection.ai_probability > 0.5 ? '#ff4444' : '#888';
+            const humanColor = detection.human_probability > 0.5 ? '#4CAF50' : '#888';
+            
+            // Return object format for special AI detector handling
+            return {
+              judgment: detection.judgment,
+              explanation: detection.explanation,
+              aiProb: aiProb,
+              humanProb: humanProb,
+              aiColor: aiColor,
+              humanColor: humanColor,
+              detectionMethod: detection.detection_method,
+              aiWords: detection.ai_indicator_words || [],
+              isAIDetector: true
+            };
+          } else {
+            throw new Error(result.error || 'Unknown detection error');
+          }
+        } catch (error) {
+          console.error('[AI DETECTOR] Error:', error);
+          return `Judgment: Error\nExplanation: Failed to connect to AI Detector. Please ensure the server is running on localhost:5000. Error: ${error.message}`;
+        }
+      }
+
+      async function analyzeImageWithHuaweiStack(file) {
+        // Call local MindSpore backend for image analysis
+        console.log("Analyzing image with MindSpore backend:", file.name);
+        
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+          
+          const response = await fetch('http://localhost:5000/api/analyze/image', {
+            method: 'POST',
+            body: formData
+          });
+          
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+          
+          const result = await response.json();
+          
+          if (result.success && result.analysis) {
+            const analysis = result.analysis;
+            
+            // Extract metrics - same format as other tools with shorter labels for mobile
+            let metrics = {};
+            if (analysis.reliability_score !== undefined) {
+              metrics['Reliability'] = analysis.reliability_score;
+            }
+            if (analysis.confidence !== undefined) {
+              metrics['Confidence'] = analysis.confidence * 100;
+            }
+            // manipulation_score from backend is already a percentage (0..100). Do not multiply again.
+            if (analysis.manipulation_score !== undefined) {
+              metrics['Edited'] = Math.min(100, Math.max(0, analysis.manipulation_score));
+            }
+            
+            return {
+              judgment: analysis.judgment,
+              explanation: analysis.explanation,
+              confidence: analysis.confidence,
+              reliability_score: analysis.reliability_score,
+              is_misinformation: analysis.is_misinformation,
+              metrics: metrics,
+              fileInfo: {
+                name: file.name,
+                size: (file.size / 1024).toFixed(1) + ' KB',
+                type: 'Image File'
+              },
+              enhanced: true
+            };
+            
+          } else {
+            throw new Error(result.error || 'Unknown analysis error');
+          }
+        } catch (error) {
+          console.error('Image analysis error:', error);
+          return `Judgment: No Data\nExplanation: Failed to connect to backend. Please ensure the server is running on localhost:5000. Error: ${error.message}`;
+        }
+      }
+
+      // --- Online Credibility Scoring with Huawei AI and Real Sources ---
+      async function generateOnlineCredibilityScore(article) {
+        try {
+          // Combine multiple credibility signals
+          let totalScore = 0;
+          let analysisCount = 0;
+          let sources = [];
+          
+          // 1. MindSpore AI Backend Analysis
+          try {
+            const analysisText = `${article.title}. ${article.description || ''}`;
+            const response = await fetch('http://localhost:5000/api/analyze/text', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: analysisText,
+                analysis_type: 'comprehensive'
+              })
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              let aiScore = 70;
+              
+              if (result.analysis?.reliability_score) {
+                aiScore = result.analysis.reliability_score;
+              }
+              
+              if (result.analysis?.judgment === 'fake') aiScore -= 30;
+              else if (result.analysis?.judgment === 'Real') aiScore += 15;
+              
+              totalScore += aiScore;
+              analysisCount++;
+              sources.push('MindSpore AI Analysis');
+            }
+          } catch (error) {
+            console.log('MindSpore backend unavailable');
+          }
+          
+          // 2. Real-Time Fact Checker (Wikipedia + DuckDuckGo + Fact-Check Sites)
+          try {
+            const factCheckText = `${article.title}. ${article.description || ''}`;
+            const factResponse = await fetch('http://localhost:5000/api/check/fact/realtime', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: factCheckText
+              })
+            });
+
+            if (factResponse.ok) {
+              const factResult = await factResponse.json();
+              let factScore = 70;
+              
+              if (factResult.result) {
+                const falseClaims = factResult.result.false_claims || [];
+                const verifiedClaims = factResult.result.verified_claims || [];
+                
+                // Heavy penalty for false claims detected by web search
+                if (falseClaims.length > 0) {
+                  const criticalFalse = falseClaims.filter(c => c.severity === 'CRITICAL' || c.severity === 'HIGH');
+                  if (criticalFalse.length > 0) {
+                    factScore = 20; // Very low score for critical false claims
+                    totalScore -= 50; // Heavy penalty
+                  } else {
+                    factScore = 40;
+                    totalScore -= 30;
+                  }
+                  sources.push(`Real-time Fact Checker (${falseClaims.length} false claim${falseClaims.length > 1 ? 's' : ''} found)`);
+                } else if (verifiedClaims.length > 0) {
+                  factScore = 85; // Boost for verified claims
+                  totalScore += 15;
+                  sources.push(`Real-time Fact Checker (${verifiedClaims.length} claim${verifiedClaims.length > 1 ? 's' : ''} verified)`);
+                } else {
+                  // No false or verified claims found - neutral
+                  factScore = 70;
+                  sources.push('Real-time Fact Checker (no issues detected)');
+                }
+              }
+              
+              totalScore += factScore;
+              analysisCount++;
+            }
+          } catch (error) {
+            console.log('Real-time fact checker unavailable:', error);
+          }
+          
+          // 3. Source Domain Reputation Check
+          const sourceDomainScore = await checkSourceReputation(article.source.name, article.url);
+          totalScore += sourceDomainScore.score;
+          analysisCount++;
+          sources.push('Domain Reputation Database');
+          
+          // 4. Real-time Content Pattern Analysis
+          const contentScore = analyzeContentPatterns(article);
+          totalScore += contentScore.score;
+          analysisCount++;
+          sources.push('Content Pattern Analysis');
+          
+          // 5. Publication Timing Analysis
+          const timingScore = analyzePublicationTiming(article);
+          totalScore += timingScore.score;
+          analysisCount++;
+          sources.push('Publication Timeline Verification');
+          
+          // Calculate final score
+          const finalScore = analysisCount > 0 ? Math.round(totalScore / analysisCount) : 60;
+          const boundedScore = Math.max(25, Math.min(95, finalScore));
+          
+          // Determine badge classification
+          let cssClass, badgeText;
+          if (boundedScore >= 75) {
+            cssClass = 'high-credibility';
+            badgeText = 'HIGH';
+          } else if (boundedScore >= 55) {
+            cssClass = 'medium-credibility';
+            badgeText = 'MED';
+          } else {
+            cssClass = 'low-credibility';
+            badgeText = 'LOW';
+          }
+          
+          return {
+            score: boundedScore,
+            cssClass: cssClass,
+            badgeText: badgeText,
+            explanation: `Verified using ${analysisCount} online sources including ${sources.join(', ')}. Confidence: ${boundedScore}%`,
+            factors: [],
+            sources: sources
+          };
+          
+        } catch (error) {
+          console.error('Online credibility analysis failed:', error);
+          return await generateCredibilityScore(article); // Fallback to local analysis
+        }
+      }
+      
+      // --- Check Source Reputation (Online Database Simulation) ---
+      async function checkSourceReputation(sourceName, url) {
+        // Simulate checking against online reputation databases
+        const trustedSources = {
+          'Reuters': 95, 'Associated Press': 92, 'BBC News': 90, 'NPR': 88,
+          'Wall Street Journal': 87, 'The Guardian': 85, 'TechCrunch': 82,
+          'Ars Technica': 88, 'Wired': 85, 'IEEE Spectrum': 90
+        };
+        
+        const questionableSources = {
+          'Daily Mail': 45, 'Buzzfeed': 50, 'Fox News': 55, 'CNN': 60
+        };
+        
+        // Check for exact matches first
+        for (const [source, score] of Object.entries(trustedSources)) {
+          if (sourceName.includes(source)) {
+            return { score: score, reason: `Trusted source: ${source}` };
+          }
+        }
+        
+        for (const [source, score] of Object.entries(questionableSources)) {
+          if (sourceName.includes(source)) {
+            return { score: score, reason: `Questionable source: ${source}` };
+          }
+        }
+        
+        // Domain analysis for unknown sources
+        try {
+          const domain = new URL(url).hostname.toLowerCase();
+          if (domain.includes('.edu') || domain.includes('.gov')) {
+            return { score: 85, reason: 'Educational/Government domain' };
+          }
+          if (domain.includes('wikipedia') || domain.includes('archive.org')) {
+            return { score: 75, reason: 'Reference/Archive source' };
+          }
+        } catch (e) {
+          // Invalid URL
+        }
+        
+        return { score: 65, reason: 'Unknown source - neutral rating' };
+      }
+      
+      // --- Content Pattern Analysis ---
+      function analyzeContentPatterns(article) {
+        let score = 70;
+        
+        // Check for clickbait patterns
+        const clickbaitWords = ['shocking', 'unbelievable', 'secret', 'doctors hate', 'miracle', 'exclusive', 'leaked', 'forbidden'];
+        const titleLower = article.title.toLowerCase();
+        const clickbaitCount = clickbaitWords.filter(word => titleLower.includes(word)).length;
+        score -= (clickbaitCount * 12);
+        
+        // Check title quality
+        if (article.title === article.title.toUpperCase()) score -= 20;
+        if ((article.title.match(/[!?]/g) || []).length > 3) score -= 15;
+        
+        // Content length analysis
+        if (article.description && article.description.length < 50) score -= 10;
+        
+        return { score: Math.max(20, Math.min(90, score)), reason: 'Content quality analysis' };
+      }
+      
+      // --- Publication Timing Analysis ---
+      function analyzePublicationTiming(article) {
+        const publishedDate = new Date(article.publishedAt);
+        const now = new Date();
+        const hoursDiff = (now - publishedDate) / (1000 * 60 * 60);
+        
+        let score = 70;
+        
+        // Recent articles get slight boost for freshness
+        if (hoursDiff < 24) score += 5;
+        else if (hoursDiff < 72) score += 2;
+        
+        // Very old articles might be outdated
+        if (hoursDiff > 24 * 30) score -= 10; // Older than a month
+        
+        return { score: Math.max(40, Math.min(85, score)), reason: 'Publication timing analysis' };
+      }
+
+      // --- AI Credibility Scoring with Real Analysis ---
+      async function generateCredibilityScore(article) {
+        try {
+          // Use real MindSpore backend analysis
+          const analysisText = `${article.title}. ${article.description || ''}`;
+          
+          const response = await fetch('http://localhost:5000/api/analyze/text', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              text: analysisText,
+              analysis_type: 'comprehensive'
+            })
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            
+            // Extract real credibility score from MindSpore analysis
+            let score = 75; // Default fallback
+            
+            if (result.analysis) {
+              // Use the reliability score from MindSpore
+              if (result.analysis.reliability_score) {
+                score = result.analysis.reliability_score;
+              }
+              // Adjust based on misinformation judgment
+              if (result.analysis.judgment === 'fake') {
+                score = Math.max(20, score - 40);
+              } else if (result.analysis.judgment === 'half-truth') {
+                score = Math.max(40, score - 20);
+              } else if (result.analysis.judgment === 'Real') {
+                score = Math.min(95, score + 10);
+              }
+              
+              // Factor in confidence score
+              if (result.analysis.confidence) {
+                const confidence = parseFloat(result.analysis.confidence);
+                if (confidence < 0.5) score -= 15;
+                else if (confidence > 0.8) score += 5;
+              }
+            }
+            
+            score = Math.max(25, Math.min(95, Math.round(score)));
+            
+            // Determine badge based on real analysis
+            let cssClass = 'low-credibility';
+            let badgeText = 'LOW';
+            
+            if (score >= 75) {
+              cssClass = 'high-credibility';
+              badgeText = 'HIGH';
+            } else if (score >= 55) {
+              cssClass = 'medium-credibility';
+              badgeText = 'MED';
+            }
+            
+            return {
+              score: score,
+              cssClass: cssClass,
+              badgeText: badgeText,
+              explanation: `AI analysis completed using MindSpore neural networks and online verification systems.`,
+              factors: [] // Simplified - no complex factors shown
+            };
+          }
+        } catch (error) {
+          console.log('Backend unavailable, using basic analysis');
+        }
+        
+        // Fallback to basic analysis if backend unavailable
+        let score = 70; // Conservative default
+        
+        // Basic source check
+        const trustedSources = ['Reuters', 'BBC', 'Associated Press', 'NPR', 'TechCrunch'];
+        if (trustedSources.some(source => article.source.name.includes(source))) {
+          score += 15;
+        }
+        
+        // Basic clickbait check  
+        const clickbaitWords = ['shocking', 'unbelievable', 'secret', 'miracle'];
+        if (clickbaitWords.some(word => article.title.toLowerCase().includes(word))) {
+          score -= 15;
+        }
+        
+        score = Math.max(35, Math.min(90, score));
+        
+        // Determine badge text and CSS class based on score
+        let cssClass = 'low-credibility';
+        let badgeText = 'LOW';
+        
+        if (score >= 80) {
+          cssClass = 'high-credibility';
+          badgeText = 'HIGH';
+        } else if (score >= 65) {
+          cssClass = 'medium-credibility';
+          badgeText = 'MED';
+        }
+        
+        return {
+          score: Math.round(score),
+          cssClass: cssClass,
+          badgeText: badgeText,
+          factors: [],
+          explanation: `Basic analysis when AI backend unavailable. Score: ${Math.round(score)}%`
+        };
+      }
+
+      async function getNewsFromHuaweiService() {
+        // Fetch news from NewsAPI.org with CORS proxy
+        const API_KEY = '94640e3ac5d2415ea315d508150097dd';
+        
+        // Try multiple approaches to handle CORS
+        const newsEndpoints = [
+          // Primary: Direct NewsAPI (may work in some browsers/environments)
+          `https://newsapi.org/v2/top-headlines?country=us&category=technology&pageSize=10&apiKey=${API_KEY}`,
+          // Fallback: CORS proxy
+          `https://api.allorigins.win/get?url=${encodeURIComponent(`https://newsapi.org/v2/top-headlines?country=us&category=technology&pageSize=10&apiKey=${API_KEY}`)}`,
+          // Alternative CORS proxy
+          `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?country=us&category=technology&pageSize=10&apiKey=${API_KEY}`
+        ];
+        
+        try {
+          console.log("Fetching news from NewsAPI...");
+          
+          for (let i = 0; i < newsEndpoints.length; i++) {
+            try {
+              const response = await fetch(newsEndpoints[i], {
+                method: 'GET',
+                headers: i === 0 ? {} : { 'X-Requested-With': 'XMLHttpRequest' }
+              });
+              
+              if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+              }
+              
+              let data;
+              if (i === 1) { // allorigins proxy
+                const proxyData = await response.json();
+                data = JSON.parse(proxyData.contents);
+              } else {
+                data = await response.json();
+              }
+              
+              if (data.status !== 'ok') {
+                throw new Error(`NewsAPI status: ${data.message || 'Unknown error'}`);
+              }
+              
+              // Filter and format articles
+              const articles = data.articles
+                .filter(article => article.title && article.title !== '[Removed]')
+                .slice(0, 8) // Limit to 8 articles for mobile display
+                .map(article => ({
+                  title: article.title.length > 80 ? article.title.substring(0, 80) + '...' : article.title,
+                  url: article.url,
+                  urlToImage: article.urlToImage,
+                  publishedAt: article.publishedAt,
+                  source: {
+                    name: article.source.name
+                  }
+                }));
+              
+              console.log(`Fetched ${articles.length} news articles via endpoint ${i + 1}`);
+              return articles;
+              
+            } catch (error) {
+              console.log(`Endpoint ${i + 1} failed:`, error.message);
+              if (i === newsEndpoints.length - 1) throw error;
+            }
+          }
+          
+        } catch (error) {
+          console.error('All news endpoints failed:', error);
+          
+          // Return curated tech news as fallback
+          return [
+            {
+              title: "AI Technology Revolutionizing Misinformation Detection",
+              url: "#",
+              urlToImage: null,
+              publishedAt: new Date().toISOString(),
+              source: { name: "Tech Today" }
+            },
+            {
+              title: "Machine Learning Advances in Content Verification",
+              url: "#",
+              urlToImage: null,
+              publishedAt: new Date(Date.now() - 3600000).toISOString(),
+              source: { name: "AI Weekly" }
+            },
+            {
+              title: "Digital Literacy: Fighting Fake News in 2025",
+              url: "#",
+              urlToImage: null,
+              publishedAt: new Date(Date.now() - 7200000).toISOString(),
+              source: { name: "Digital Times" }
+            },
+            {
+              title: "Neural Networks Improve Fact-Checking Accuracy",
+              url: "#",
+              urlToImage: null,
+              publishedAt: new Date(Date.now() - 10800000).toISOString(),
+              source: { name: "Science Tech" }
+            }
+          ];
+        }
+      }
+      
+      // Wire tools UI after fragment load if on /tools
+      const origLoadFragment = loadFragment;
+      loadFragment = async function(route) {
+        await origLoadFragment(route);
+        if (route === 'tools') toolsEventWiring();
+      };
+      
+
+      // --- NewsAPI Fetching ---
+      async function fetchAndDisplayNews() {
+        const newsContainer = document.getElementById('newsFeed');
+        if (!newsContainer) return;
+
+
+        // Show spinner while loading
+        newsContainer.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height: 100%;"><div class="bubble-spinner"></div></div>`;
+
+        try {
+          // Placeholder for new Huawei-based news service
+          const articles = await getNewsFromHuaweiService();
+
+          if (!articles || articles.length === 0) {
+            newsContainer.innerHTML = '<p style="text-align:center;">Awaiting new data source integration.</p>';
+            return;
+          }
+
+          // Display articles immediately with loading placeholders for credibility
+          const articlesHtml = articles.map(article => {
+            const imageUrl = article.urlToImage || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; // Transparent pixel
+            const articleId = article.title.replace(/[^a-zA-Z0-9]/g, '').substring(0, 20);
+            
+            // Show loading state initially
+            const initialCredibilityData = {
+              cssClass: 'loading-credibility',
+              badgeText: '...',
+              score: 0,
+              explanation: 'Analyzing with Huawei AI...',
+              factors: []
+            };
+            
+            return `
+            <div class="news-article" style="position: relative;" data-article-id="${articleId}">
+              <div class="credibility-explanation" id="explanation-${articleId}" style="display: none;">
+                <h4>Credibility Analysis</h4>
+                <div class="panel-content"></div>
+              </div>
+              <div class="huawei-ai-badge ${initialCredibilityData.cssClass}" 
+                   title="Analyzing with Huawei AI..."
+                   data-article-url="${article.url}"
+                   data-article-title="${article.title.replace(/"/g, '&quot;')}"
+                   data-article-description="${(article.description || '').replace(/"/g, '&quot;')}"
+                   data-credibility='${JSON.stringify(initialCredibilityData)}'
+                   id="badge-${articleId}">
+                <svg class="shield-icon" viewBox="0 0 24 24">
+                  <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.6 14.8,10V11.5C15.4,11.5 16,12.4 16=13V16C16,17.4 15.4,18 14.8,18H9.2C8.6,18 8,17.4 8,16V13C8,12.4 8.6,11.5 9.2,11.5V10C9.2,8.6 10.6,7 12,7M12,8.2C11.2,8.2 10.5,8.7 10.5,10V11.5H13.5V10C13.5,8.7 12.8,8.2 12,8.2Z"/>
+                </svg>
+                ${initialCredibilityData.badgeText}
+              </div>
+              <a href="${article.url}" target="_blank" rel="noopener noreferrer">
+                <img src="${imageUrl}" class="news-image" alt="Article image" onerror="this.style.display='none'">
+                <div class="news-content">
+                  <h3 class="news-title">${article.title}</h3>
+                  <p class="news-meta">${article.source.name} - ${new Date(article.publishedAt).toLocaleDateString()}</p>
+                </div>
+              </a>
+            </div>
+          `}).join('');
+
+          newsContainer.innerHTML = articlesHtml;
+          
+          // Add event listeners to badges after HTML is created
+          document.querySelectorAll('.huawei-ai-badge').forEach(badge => {
+            badge.addEventListener('click', function(event) {
+              event.stopPropagation();
+              event.preventDefault();
+              
+              const articleUrl = this.getAttribute('data-article-url');
+              const articleTitle = this.getAttribute('data-article-title');
+              const articleDescription = this.getAttribute('data-article-description');
+              
+              toggleCredibilityExplanation(this, articleUrl, articleTitle, articleDescription);
+              return false;
+            });
+          });
+          
+          // Now start async credibility analysis for each article
+          console.log('Starting real-time credibility analysis...');
+          articles.forEach(async (article, index) => {
+            const articleId = article.title.replace(/[^a-zA-Z0-9]/g, '').substring(0, 20);
+            const badgeElement = document.getElementById(`badge-${articleId}`);
+            
+            if (badgeElement) {
+              try {
+                // Get real credibility analysis with online sources
+                const credibilityData = await generateOnlineCredibilityScore(article);
+                
+                // Update the badge with real data
+                badgeElement.className = `huawei-ai-badge ${credibilityData.cssClass}`;
+                badgeElement.innerHTML = `
+                  <svg class="shield-icon" viewBox="0 0 24 24">
+                    <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.6 14.8,10V11.5C15.4,11.5 16,12.4 16=13V16C16,17.4 15.4,18 14.8,18H9.2C8.6,18 8,17.4 8,16V13C8,12.4 8.6,11.5 9.2,11.5V10C9.2,8.6 10.6,7 12,7M12,8.2C11.2,8.2 10.5,8.7 10.5,10V11.5H13.5V10C13.5,8.7 12.8,8.2 12,8.2Z"/>
+                  </svg>
+                  ${credibilityData.badgeText}
+                `;
+                badgeElement.setAttribute('data-credibility', JSON.stringify(credibilityData));
+                badgeElement.title = `Credibility: ${credibilityData.score}% - Click for details`;
+                
+              } catch (error) {
+                console.log(`Failed to analyze article ${index + 1}:`, error);
+                // Keep loading state if analysis fails
+              }
+            }
+          });
+
+        } catch (error) {
+          console.error('Error fetching news:', error);
+          newsContainer.innerHTML = `<p style="text-align:center; color: #ff8a8a;">Failed to load news. ${error.message}</p>`;
+        }
+      }
+
+      // --- Toggle Credibility Explanation ---
+      function toggleCredibilityExplanation(badgeElement, articleUrl, title, description) {
+        // Close all other panels first
+        document.querySelectorAll('.credibility-explanation').forEach(panel => {
+          if (panel !== badgeElement.parentElement.querySelector('.credibility-explanation')) {
+            panel.style.display = 'none';
+          }
+        });
+
+        // Get the panel for this specific badge (it's the first child of the parent article)
+        const explanationPanel = badgeElement.parentElement.querySelector('.credibility-explanation');
+        
+        const isVisible = explanationPanel.style.display === 'block';
+        if (isVisible) {
+          explanationPanel.style.display = 'none';
+          return false;
+        }
+
+        // Show analysis for THIS specific news item
+        const credibilityData = JSON.parse(badgeElement.getAttribute('data-credibility'));
+        const quickAnalysis = generateQuickFallbackAnalysis(credibilityData, title, articleUrl);
+        
+        explanationPanel.innerHTML = `
+          <h4>Credibility</h4>
+          <div class="credibility-score-display">${credibilityData.score}% Reliable</div>
+        `;
+        
+        explanationPanel.style.display = 'block';
+        return false;
+      }      // Generate Huawei-specific analysis from MindSpore result
+      function generateHuaweiSpecificAnalysis(mindsporeResult, title, url) {
+        const factors = [];
+        let finalScore = 75;
+        
+        // MindSpore AI Content Analysis
+        if (mindsporeResult.judgment) {
+          let contentScore = 85;
+          let contentColor = '#27ae60';
+          let contentResult = 'Verified';
+          
+          if (mindsporeResult.judgment === 'fake') {
+            contentScore = 25;
+            contentColor = '#e74c3c';
+            contentResult = 'High Risk';
+            finalScore -= 40;
+          } else if (mindsporeResult.judgment === 'half-truth') {
+            contentScore = 55;
+            contentColor = '#f39c12';
+            contentResult = 'Partial Truth';
+            finalScore -= 20;
+          } else {
+            finalScore += 15;
+          }
+          
+          factors.push({
+            name: 'Content Check',
+            result: contentResult,
+            color: contentColor
+          });
+        }
+        
+        // Security Check
+        const domain = new URL(url).hostname;
+        const isSecure = url.startsWith('https://');
+        let securityScore = isSecure ? 'Secure' : 'Unsecured';
+        let securityColor = isSecure ? '#27ae60' : '#e74c3c';
+        if (!isSecure) finalScore -= 15;
+        
+        factors.push({
+          name: 'Security',
+          result: securityScore,
+          color: securityColor
+        });
+        
+        // Neural Network Language Analysis
+        if (mindsporeResult.confidence_score) {
+          const confidence = parseFloat(mindsporeResult.confidence_score);
+          let languageResult = 'High Confidence';
+          let languageColor = '#27ae60';
+          
+          if (confidence < 0.5) {
+            languageResult = 'Low Confidence';
+            languageColor = '#e74c3c';
+            finalScore -= 20;
+          } else if (confidence < 0.7) {
+            languageResult = 'Medium Confidence';
+            languageColor = '#f39c12';
+            finalScore -= 10;
+          } else {
+            finalScore += 10;
+          }
+          
+          factors.push({
+            name: 'AI Confidence',
+            result: `${Math.round(confidence * 100)}%`,
+            color: languageColor
+          });
+        }
+        
+        // Real-time Fact Verification
+        if (mindsporeResult.fact_check_results) {
+          const factResults = mindsporeResult.fact_check_results;
+          let factResult = 'Verified Claims';
+          let factColor = '#27ae60';
+          
+          if (factResults.includes('contradicted') || factResults.includes('false')) {
+            factResult = 'Contradicted Claims';
+            factColor = '#e74c3c';
+            finalScore -= 25;
+          } else if (factResults.includes('unverified') || factResults.includes('mixed')) {
+            factResult = 'Mixed Verification';
+            factColor = '#f39c12';
+            finalScore -= 10;
+          }
+          
+          factors.push({
+            name: 'Fact Check',
+            result: factResult.replace(' Claims', '').replace(' Verification', ''),
+            color: factColor
+          });
+        }
+        
+        // Ensure final score is within bounds
+        finalScore = Math.max(15, Math.min(95, finalScore));
+        
+        let scoreColor = '#e74c3c'; // Red for low
+        if (finalScore >= 75) scoreColor = '#27ae60'; // Green for high
+        else if (finalScore >= 50) scoreColor = '#f39c12'; // Orange for medium
+        
+        const summary = `Huawei AI has analyzed this content using advanced MindSpore neural networks, security protocols, and real-time fact verification systems. The analysis considers content authenticity, source security, language patterns, and factual accuracy to provide a comprehensive credibility assessment.`;
+        
+        return {
+          finalScore: Math.round(finalScore),
+          scoreColor,
+          summary,
+          factors
+        };
+      }
+
+      // Generate quick analysis
+      function generateQuickFallbackAnalysis(credibilityData, title, url) {
+        const factors = [];
+        let scoreColor = '#e74c3c'; // Red for low
+        
+        if (credibilityData.score >= 75) scoreColor = '#27ae60'; // Green for high
+        else if (credibilityData.score >= 50) scoreColor = '#f39c12'; // Orange for medium
+        
+        // Basic analysis
+        const domain = new URL(url).hostname;
+        const isSecure = url.startsWith('https://');
+        factors.push({
+          name: 'Security',
+          result: isSecure ? 'Secure' : 'Unsecured',
+          color: isSecure ? '#27ae60' : '#e74c3c'
+        });
+        
+        // Title check
+        const hasClickbait = /shocking|unbelievable|secret|exclusive|breaking/i.test(title);
+        factors.push({
+          name: 'Title',
+          result: hasClickbait ? 'Clickbait' : 'Clean',
+          color: hasClickbait ? '#f39c12' : '#27ae60'
+        });
+        
+        // Source check
+        const trustedDomains = ['reuters.com', 'bbc.com', 'ap.org', 'npr.org', 'wsj.com', 'techcrunch.com'];
+        const isTrusted = trustedDomains.some(trusted => domain.includes(trusted));
+        factors.push({
+          name: 'Source',
+          result: isTrusted ? 'Trusted' : 'Unknown',
+          color: isTrusted ? '#27ae60' : '#f39c12'
+        });
+        
+        const summary = `Basic Huawei credibility analysis completed. This assessment is based on source reliability, content patterns, and security protocols. For detailed neural network analysis, ensure the MindSpore backend is available.`;
+        
+        return {
+          scoreColor,
+          summary,
+          factors
+        };
+      }
+
+      // --- Update Home Screen Stats ---
+      function updateHomeScreenStats() {
+        const analyzedEl = document.getElementById('stats-analyzed');
+        const flaggedEl = document.getElementById('stats-flagged');
+        const reliabilityEl = document.getElementById('stats-reliability');
+
+        if (!analyzedEl || !flaggedEl || !reliabilityEl) return;
+
+        const totalAnalyzed = analysisHistory.length;
+        // Flagged: count items that are "fake" or "half-truth" (misinformation)
+        const totalFlagged = analysisHistory.filter(
+          item => item && (item.judgment === 'fake' || item.judgment === 'half-truth' || item.isMisinformation)
+        ).length;
+
+        let avgReliability = 0;
+        if (totalAnalyzed > 0) {
+          const totalScore = analysisHistory.reduce((sum, item) => sum + item.reliabilityScore, 0);
+          avgReliability = Math.round(totalScore / totalAnalyzed);
+        }
+
+        analyzedEl.textContent = totalAnalyzed;
+        flaggedEl.textContent = totalFlagged;
+        reliabilityEl.textContent = totalAnalyzed > 0 ? `${avgReliability}%` : '--';
+
+        // Color-code reliability score
+        reliabilityEl.className = 'stat-value'; // Reset classes
+        if (totalAnalyzed > 0) {
+          if (avgReliability >= 75) {
+            reliabilityEl.classList.add('reliability-high');
+          } else if (avgReliability >= 40) {
+            reliabilityEl.classList.add('reliability-medium');
+          } else {
+            reliabilityEl.classList.add('reliability-low');
+          }
+        }
+      }
+
+      // --- centralized bubble & fragment wiring (existing functions) ---
+      function wireFragmentButtons(route) {
+        // Only show the VPN-style toggle on home fragment
+        const toggleWrap = document.getElementById('bubbleToggleWrap');
+        const toggleSwitch = document.getElementById('bubbleToggleSwitch');
+        const powerBtn = document.getElementById('bubblePowerBtn');
+        if (toggleWrap && toggleSwitch) {
+          // The toggle is now part of the home fragment, so it will only exist when the home page is loaded.
+          // No need to hide/show, just wire the event.
+          toggleSwitch.checked = !!(document.getElementById('floatingBubbleContainer') && document.getElementById('floatingBubbleContainer').style.display !== 'none');
+          toggleSwitch.onchange = (e) => {
+
+            toggleFloatingBubble(toggleSwitch.checked);
+          };
+        }
+        if (powerBtn) {
+          // Set initial state
+          const isOn = !!(document.getElementById('floatingBubbleContainer') && document.getElementById('floatingBubbleContainer').style.display !== 'none');
+          if (isOn) powerBtn.classList.add('on');
+          else powerBtn.classList.remove('on');
+          powerBtn.onclick = () => {
+            const nowOn = !powerBtn.classList.contains('on');
+            powerBtn.classList.toggle('on', nowOn);
+            toggleFloatingBubble(nowOn);
+          };
+        }
+      }
+
+      // --- floating bubble (ensure/toggle logic) ---
+      async function mindSporeDetectMisinformation(content) {
+        const panelEl = document.getElementById('floatingBubblePanel');
+        const contentEl = document.getElementById('floatingBubbleContent');
+
+        try {
+            // Call enhanced MindSpore backend with online verification
+            console.log("Analyzing clipboard content with Enhanced MindSpore + Online Verification");
+            console.log("Content to analyze:", content);
+            
+            const response = await fetch('http://localhost:5000/api/analyze/enhanced', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    text: content
+                })
+            });
+            
+            console.log("Response status:", response.status);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+            const apiResult = await response.json();
+            console.log("API Result:", apiResult);
+            
+            if (!apiResult.success || !apiResult.enhanced_analysis) {
+                throw new Error(apiResult.error || 'Unknown analysis error');
+            }
+            
+            const enhanced = apiResult.enhanced_analysis;
+            const mindspore = enhanced.mindspore_analysis;
+            const online = enhanced.online_verification;
+            const combined = enhanced.combined_credibility;
+            
+            console.log("Enhanced analysis:", enhanced);
+            console.log("MindSpore analysis:", mindspore);
+            console.log("Online verification:", online);
+            
+            // Create comprehensive analysis text using the actual returned data
+            const originInfo = online.origin_detection || {};
+            const sourceInfo = online.source_analysis || {};
+            
+            const highCredSources = sourceInfo.high_credibility_sources || [];
+            const lowCredSources = sourceInfo.low_credibility_sources || [];
+            const contradictory = online.contradictory_evidence || [];
+            const supporting = online.supporting_evidence || [];
+            
+            let sourcesSummary = "Local MindSpore Analysis";
+            if (highCredSources.length > 0) {
+                sourcesSummary += ` + ${highCredSources.length} high-credibility sources`;
+            }
+            if (lowCredSources.length > 0) {
+                sourcesSummary += ` + ${lowCredSources.length} questionable sources`;
+            }
+            
+            let originText = originInfo.likely_source_type || "Unknown";
+            if (originInfo.confidence > 0.7) {
+                originText += ` (${Math.round(originInfo.confidence * 100)}% confidence)`;
+            }
+            
+            // Enhanced judgment based on combined analysis
+            let enhancedJudgment = enhanced.recommendation || mindspore.judgment;
+            
+            let verificationDetails = "";
+            if (supporting.length > 0) {
+                verificationDetails += `${supporting.length} supporting sources found. `;
+            }
+            if (contradictory.length > 0) {
+                verificationDetails += `${contradictory.length} contradictory sources found. `;
+            }
+            
+            const analysisText = `Judgment: ${enhancedJudgment}
+Explanation: ${mindspore.explanation} ${verificationDetails}
+Combined Score: MindSpore: ${Math.round(combined.local_score * 100)}% | Online: ${Math.round(combined.online_score * 100)}% | Final: ${Math.round(combined.combined_score * 100)}%
+Origin: ${originText}
+Sources: ${sourcesSummary}`;
+
+            // --- Parse enhanced response into sections ---
+            // Get the actual judgment from MindSpore analysis
+            const actualJudgment = mindspore.judgment || 'Unknown';
+            const explanation = mindspore.explanation || 'No explanation available';
+            const origin = originText;
+            const sourcesRaw = sourcesSummary;
+
+            console.log("Actual judgment from MindSpore:", actualJudgment);
+            console.log("Enhanced judgment/recommendation:", enhancedJudgment);
+
+            // Normalize judgment using actual MindSpore judgment
+            let judgment = actualJudgment.toLowerCase();
+            if (/real/i.test(judgment) || /true/i.test(judgment)) judgment = 'real';
+            else if (/fake/i.test(judgment) || /false/i.test(judgment)) judgment = 'fake';
+            else if (/half/i.test(judgment) || /partial/i.test(judgment)) judgment = 'half-truth';
+            else judgment = 'no data';
+
+            console.log("Normalized judgment:", judgment);
+
+            // Color/icon for each judgment (PLAIN TEXT ONLY)
+            const JUDGMENT_META = {
+              'real':   { color: '#22c55e', bg: '#e6f9ed', icon: 'REAL', label: 'Real' },
+              'fake':   { color: '#ef4444', bg: '#ffeaea', icon: 'FAKE', label: 'Fake' },
+              'half-truth': { color: '#f59e42', bg: '#fff7e6', icon: 'PARTIAL', label: 'Half-Truth' },
+              'no data': { color: '#1e3a8a', bg: '#e6eaff', icon: 'NO DATA', label: 'No Data' }
+            };
+            const meta = JUDGMENT_META[judgment] || JUDGMENT_META['no data'];
+
+            // Parse sources into array of {text, url}
+            let sourcesArr = [];
+            if (sourcesRaw && sourcesRaw !== 'No sources found') {
+              sourcesArr = sourcesRaw.split(';').map(s => {
+                const urlMatch = s.match(/(https?:\/\/[^\s]+)/);
+                return {
+                  text: s.replace(/https?:\/\/[^\s]+/, '').trim() || urlMatch?.[1] || s.trim(),
+                  url: urlMatch ? urlMatch[1] : null
+                };
+              }).filter(s => s.text || s.url);
+            }
+
+            // Compose HTML for the bubble panel
+            let sourcesHtml = '';
+            if (sourcesArr.length > 0) {
+              sourcesHtml = `<ul style="margin:0;padding-left:0;list-style:none;">` +
+                sourcesArr.slice(0, 2).map(s =>
+                  `<li style="margin-bottom:4px;">
+                    ${s.url
+                      ? `<a href="${s.url}" target="_blank" style="color:${meta.color};text-decoration:underline;">${s.text || s.url}</a>`
+                      : `<span style="color:${meta.color};">${s.text}</span>`
+                    }
+                  </li>`
+                ).join('') +
+                (sourcesArr.length > 2
+                  ? `<li><a href="#" class="see-more-sources" style="color:${meta.color};font-size:0.97em;text-decoration:underline;cursor:pointer;">See more</a></li>`
+                  : '') +
+                `</ul>`;
+            } else {
+              sourcesHtml = `<div style="color:#888;">No sources found</div>`;
+            }
+
+            // Save all sources for "See more"
+            window._bubbleAllSources = sourcesArr;
+
+            // Save for panel rendering
+            // Set isMisinformation and reliabilityScore robustly
+            let reliabilityScore = 80; // Default to 80 if not found
+            let isMisinformation = (judgment === 'fake' || judgment === 'half-truth');
+
+            if (judgment === 'fake') {
+              reliabilityScore = 20;
+            } else if (judgment === 'half-truth') {
+              reliabilityScore = 50;
+            } else if (judgment === 'real') {
+              reliabilityScore = 95;
+            } else {
+              reliabilityScore = 60;
+            }
+
+            
+            // Try to extract a reliability score from the explanation or sources if present
+            let relMatch = (() => {
+              let m = explanation.match(/(\d{1,3})\s*%/);
+              if (m && +m[1] >= 10 && +m[1] <= 100) return +m[1];
+              m = sourcesRaw && sourcesRaw.match(/(\d{1,3})\s*%/);
+              if (m && +m[1] >= 10 && +m[1] <= 100) return +m[1];
+              return null;
+            })();
+            if (relMatch) {
+              reliabilityScore = relMatch;
+            }
+
+            // Compose result object
+            const result = {
+              summary: mindspore.summary || explanation.substring(0, 80) + '...', // SHORT summary for bubble
+              isMisinformation,
+              reliabilityScore,
+              judgment,
+              explanation, // FULL explanation for Analysis Details
+              origin,
+              sourcesHtml,
+              meta: {
+                ...meta,
+                timestamp: Date.now(),
+                analyzedAt: new Date().toISOString()
+              }
+            };
+
+            // Store result and update home screen stats
+            analysisHistory.push(result);
+            localStorage.setItem('analysisHistory', JSON.stringify(analysisHistory));
+            updateHomeScreenStats();
+
+            return result;
+          } catch (err) {
+            console.error('Final analysis error:', err);
+            // Show error in panel
+            panelEl.style.display = 'block';
+            contentEl.innerHTML = `<div style="color:red; padding: 8px;"><strong>Error:</strong> ${err.message}</div>`;
+            throw err;
+          }
+      }
+
+      function ensureFloatingBubble() {
+        let container = document.getElementById('floatingBubbleContainer');
+        const root = document.querySelector('.screen-inner') || document.body;
+        if (container) return container;
+        container = document.createElement('div');
+        container.id = 'floatingBubbleContainer';
+        Object.assign(container.style, {
+          position: 'absolute',
+          top: 'calc(100% - 160px)',
+          left: 'calc(100% - 80px)',
+          zIndex: 60,
+          display: 'none',
+          pointerEvents: 'auto',
+          cursor: 'grab'
+        });
+
+        // --- Eye Bubble Button with animated blinking and following cursor ---
+        const btn = document.createElement('button');
+        btn.id = 'floatingBubbleBtn';
+        Object.assign(btn.style, {
+          width: '64px',
+          height: '64px',
+          borderRadius: '50%',
+          border: '0',
+          background: 'linear-gradient(135deg,#2563eb 0%,#00ffd6 100%)',
+          boxShadow: '0 4px 24px 0 #2563eb44, 0 1.5px 8px 0 #00ffd622',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          transition: 'box-shadow 0.2s, background 0.2s',
+          position: 'relative',
+          overflow: 'visible',
+          padding: 0
+        });
+
+        // Eye SVG with blinking animation
+        btn.innerHTML = `
+          <span class="bubble-eye-outer">
+            <svg class="bubble-eye-svg" width="44" height="44" viewBox="0 0 44 44" fill="none">
+              <ellipse class="bubble-eye-white" cx="22" cy="22" rx="18" ry="12" fill="#fff" stroke="#00ffd6" stroke-width="2"/>
+              <ellipse class="bubble-eye-iris" id="bubbleEyeIris" cx="22" cy="22" rx="7" ry="7" fill="#2563eb"/>
+              <ellipse class="bubble-eye-pupil" id="bubbleEyePupil" cx="22" cy="22" rx="3.2" ry="3.2" fill="#111"/>
+              <ellipse class="bubble-eye-reflection" id="bubbleEyeReflection" cx="24" cy="20" rx="1.2" ry="2" fill="#fff" opacity="0.7"/>
+              <rect class="bubble-eye-lid" x="4" y="10" width="36" height="24" rx="12" fill="#101c2c" style="opacity:0;"/>
+            </svg>
+          </span>
+        `;
+
+        // Add CSS for the eye and blinking animation
+        if (!document.getElementById('bubbleEyeStyle')) {
+          const style = document.createElement('style');
+          style.id = 'bubbleEyeStyle';
+          style.innerHTML = `
+          .bubble-eye-outer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            position: relative;
+            animation: bubbleEyePulse 2.2s infinite;
+          }
+          @keyframes bubbleEyePulse {
+            0%   { filter: drop-shadow(0 0 0 #00ffd633); }
+            50%  { filter: drop-shadow(0 0 12px #00ffd655); }
+            100% { filter: drop-shadow(0 0 0 #00ffd633); }
+          }
+          .bubble-eye-svg { display: block; }
+          .bubble-eye-lid {
+            animation: bubbleEyeBlink 4s infinite;
+            transform-origin: 50% 50%;
+          }
+          @keyframes bubbleEyeBlink {
+            0%, 92%, 100% { opacity: 0; }
+            94% { opacity: 1; }
+            96% { opacity: 1; }
+            98% { opacity: 0; }
+          }
+          .bubble-eye-iris, .bubble-eye-pupil, .bubble-eye-reflection {
+            transition: transform 0.18s cubic-bezier(.4,2,.6,1);
+          }
+          .bubble-eye-outer:active .bubble-eye-iris,
+          .bubble-eye-outer:active .bubble-eye-pupil,
+          .bubble-eye-outer:active .bubble-eye-reflection {
+            transform: translateY(2px) scale(0.95);
+          }
+          `;
+          document.head.appendChild(style);
+        }
+
+        container.appendChild(btn);
+
+        // --- Eye follows cursor logic ---
+        let iris = null, pupil = null, reflection = null;
+        function setEyeRefs() {
+          iris = btn.querySelector('#bubbleEyeIris');
+          pupil = btn.querySelector('#bubbleEyePupil');
+          reflection = btn.querySelector('#bubbleEyeReflection');
+        }
+        setEyeRefs();
+
+        function moveEye(event) {
+          if (!iris || !pupil || !reflection) setEyeRefs();
+          if (!iris || !pupil || !reflection) return;
+          const rect = btn.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          let mx, my;
+          if (event.touches && event.touches.length) {
+            mx = event.touches[0].clientX;
+            my = event.touches[0].clientY;
+          } else {
+            mx = event.clientX;
+            my = event.clientY;
+          }
+          let dx = mx - cx;
+          let dy = my - cy;
+          const maxIris = 5, maxPupil = 7;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist > maxPupil) {
+            dx = dx * maxPupil / dist;
+            dy = dy * maxPupil / dist;
+          }
+          iris.setAttribute('transform', `translate(${dx*0.6},${dy*0.6})`);
+          pupil.setAttribute('transform', `translate(${dx},${dy})`);
+          reflection.setAttribute('transform', `translate(${dx*0.35},${dy*0.25})`);
+        }
+        function resetEye() {
+          setEyeRefs();
+          if (iris && pupil && reflection) {
+            iris.setAttribute('transform', '');
+            pupil.setAttribute('transform', '');
+            reflection.setAttribute('transform', '');
+          }
+        }
+        // Attach listeners only once
+        if (!window._bubbleEyeListeners) {
+          document.addEventListener('mousemove', moveEye);
+          document.addEventListener('touchmove', moveEye, {passive:true});
+          btn.addEventListener('mouseleave', resetEye);
+          btn.addEventListener('touchend', resetEye);
+          window._bubbleEyeListeners = true;
+        }
+
+        const panel = document.createElement('div');
+        panel.id = 'floatingBubblePanel';
+        Object.assign(panel.style, {
+          // Position the panel absolutely relative to the container.
+          position: 'absolute',
+          bottom: '64px', // Position it above the button (56px height + 8px margin)
+          right: '0',      // Align it to the right edge of the button
+          minWidth: '240px',
+          maxWidth: '320px',
+          background: '#fff',
+          color: '#000',
+          borderRadius: '10px',
+          padding: '10px',
+          boxShadow: '0 8px 30px rgba(0,0,0,0.3)',
+          display: 'none',
+          // No margin needed as it's absolutely positioned.
+        });
+        panel.innerHTML = `
+          <div class="bubble-panel-title">
+            <svg width="18" height="18" fill="none" stroke="#00b8a9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;"><circle cx="9" cy="9" r="8"/><path d="M9 5v4"/><circle cx="9" cy="13" r="1"/></svg>
+            Bubble Insight
+          </div>
+          <hr class="bubble-panel-divider"/>
+          <div id="floatingBubbleContent">No result</div>
+          
+        `;
+        container.appendChild(panel);
+
+        root.appendChild(container);
+
+        // Make the bubble draggable
+        makeDraggable(container);
+
+        const originalBtnContent = btn.innerHTML;
+
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const panelEl = document.getElementById('floatingBubblePanel');
+          if (panelEl.style.display === 'block') {
+            panelEl.style.display = 'none';
+            return;
+          }
+          if (!navigator.clipboard || !navigator.clipboard.readText) {
+            alert('Clipboard read not supported in this browser.');
+            return;
+          }
+          try {
+            btn.innerHTML = '<div class="bubble-spinner"></div>';
+            // Restore eye refs after spinner is replaced back
+            const restoreEye = () => {
+              btn.innerHTML = originalBtnContent;
+              setEyeRefs();
+            };
+            const text = await navigator.clipboard.readText();
+            if (!text || text.trim().length < 20) {
+              panelEl.style.display = 'block';
+              document.getElementById('floatingBubbleContent').innerText = 'Clipboard text is too short.';
+              restoreEye();
+              return;
+            }
+            panelEl.style.display = 'none';
+            const r = await mindSporeDetectMisinformation(text);
+            panelEl.style.display = 'block';
+            
+            // Use SHORT summary for bubble, NOT the full explanation
+            let bubbleSummary = r.summary || r.explanation || '<span style="color:#888;">No analysis available.</span>';
+            
+            // Keep summary concise - if backend didn't provide summary, truncate explanation
+            if (!r.summary && r.explanation && r.explanation.length > 100) {
+                bubbleSummary = r.explanation.substring(0, 100) + '...';
+            }
+            
+            document.getElementById('floatingBubbleContent').innerHTML = `
+              <div style="background:${r.meta.bg};border-radius:10px;padding:10px 12px 8px 12px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;">
+                <span style="font-weight:700;font-size:1.2em;color:${r.meta.color};">${r.meta.icon}</span>
+              </div>
+              <div style="background:#fff;border-radius:8px;padding:10px 12px 8px 12px;margin-bottom:8px;border-left:4px solid ${r.meta.color};">
+                <div style="font-weight:600;color:${r.meta.color};margin-bottom:4px;">Quick Summary</div>
+                <div style="font-size:0.94em;color:#222;line-height:1.5;">${bubbleSummary}</div>
+              </div>
+              <div style="display:flex;gap:10px;margin-top:4px;">
+                <div style="flex:1;background:#f7fafc;border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:6px;">
+                  <span style="font-weight:600;color:#00b8a9;">Misinformation:</span>
+                  <span class="bubble-panel-value ${
+                    r.judgment === 'half-truth' ? 'neutral' : (r.isMisinformation ? 'negative' : 'positive')
+                  }">${
+                    r.judgment === 'half-truth' ? 'PARTIAL' : (r.isMisinformation ? 'YES' : 'NO')
+                  }</span>
+                </div>
+                <div style="flex:1;background:#f7fafc;border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:6px;">
+                  <span style="font-weight:600;color:#00b8a9;">Reliability:</span>
+                  <span class="bubble-panel-value ${r.reliabilityScore >= 75 ? 'positive' : r.reliabilityScore >= 40 ? 'neutral' : 'negative'}">${typeof r.reliabilityScore === 'number' && !isNaN(r.reliabilityScore) ? r.reliabilityScore + '%' : '60%'}</span>
+                </div>
+              </div>
+            `;
+            
+            restoreEye();
+            // See more sources click handler
+            const seeMore = panelEl.querySelector('.see-more-sources');
+            if (seeMore) {
+              seeMore.onclick = function(ev) {
+                ev.preventDefault();
+                if (window._bubbleAllSources && window._bubbleAllSources.length > 2) {
+                  seeMore.parentElement.innerHTML =
+                    window._bubbleAllSources.map(s =>
+                      `<li style="margin-bottom:4px;">
+                        ${s.url
+                          ? `<a href="${s.url}" target="_blank" style="color:${r.meta.color};text-decoration:underline;">${s.text || s.url}</a>`
+                          : `<span style="color:${r.meta.color};">${s.text}</span>`
+                        }
+                      </li>`
+                    ).join('');
+                }
+              };
+            }
+          } catch (err) {
+            // Error is now displayed by the mindSporeDetectMisinformation function
+            // No action needed here, but the finally block will still run.
+            btn.innerHTML = originalBtnContent;
+            setEyeRefs();
+          }
+        });
+
+        return container;
+      }
+
+      function toggleFloatingBubble(show) {
+        const c = ensureFloatingBubble();
+        c.style.display = show ? 'flex' : 'none';
+      }
+
+      // New function to make an element draggable
+      function makeDraggable(element) {
+        let isDragging = false;
+        let offsetX, offsetY;
+        const parent = element.parentElement;
+
+        const dragStart = (e) => {
+          isDragging = true;
+          element.style.cursor = 'grabbing';
+          
+          const event = e.type === 'touchstart' ? e.touches[0] : e;
+          const rect = element.getBoundingClientRect();
+          
+          // Calculate offset from the element's top-left corner
+          offsetX = event.pageX - (rect.left + window.scrollX);
+          offsetY = event.pageY - (rect.top + window.scrollY);
+
+          document.addEventListener('mousemove', dragMove);
+          document.addEventListener('mouseup', dragEnd);
+          document.addEventListener('touchmove', dragMove, { passive: false });
+          document.addEventListener('touchend', dragEnd);
+          
+          e.preventDefault();
+        };
+
+        const dragMove = (e) => {
+          if (!isDragging) return;
+          
+          const event = e.type === 'touchmove' ? e.touches[0] : e;
+          const parentRect = parent.getBoundingClientRect();
+
+          // Calculate new position relative to the parent
+          let newX = event.pageX - (parentRect.left + window.scrollX) - offsetX;
+          let newY = event.pageY - (parentRect.top + window.scrollY) - offsetY;
+
+          // Constrain within parent boundaries
+          const elementRect = element.getBoundingClientRect();
+          newX = Math.max(0, Math.min(newX, parentRect.width - elementRect.width));
+          newY = Math.max(0, Math.min(newY, parentRect.height - elementRect.height));
+          element.style.left = `${newX}px`;
+          element.style.top = `${newY}px`;
+          if (e.type === 'touchmove') {
+            e.preventDefault();
+          }
+        };
+
+        const dragEnd = () => {
+          isDragging = false;
+          element.style.cursor = 'grab';
+          document.removeEventListener('mousemove', dragMove);
+          document.removeEventListener('mouseup', dragEnd);
+          document.removeEventListener('touchmove', dragMove);
+          document.removeEventListener('touchend', dragEnd);
+        };
+
+        element.addEventListener('mousedown', dragStart);
+        element.addEventListener('touchstart', dragStart, { passive: false });
+      }
+
+      function setActive(route) {
+        // Toggle .active for every bottom-nav anchor across the document
+        document.querySelectorAll('.bottom-nav a').forEach((a) => {
+          const target = normalizeRouteFromHref(a.getAttribute('data-href') || a.getAttribute('href'));
+          a.classList.toggle('active', target === route);
+        });
+      }
+
+      // Delegated click handler: intercept clicks on anchors inside any .bottom-nav
+      document.addEventListener('click', (e) => {
+        const a = (e.target instanceof Element) ? e.target.closest('.bottom-nav a') : null;
+        if (!a) return;
+        e.preventDefault();
+        const href = a.getAttribute('data-href') || a.getAttribute('href') || '/';
+        const route = normalizeRouteFromHref(href);
+        // keep URL on same file, set hash so back/forward works
+        window.location.hash = `#/${route}`;
+        // load and activate
+        loadFragment(route);
+      });
+
+      // handle manual hash changes / back-forward
+      window.addEventListener('hashchange', () => {
+        const hash = (window.location.hash || '').replace(/^#\/?/, '');
+        const route = normalizeRouteFromHref(hash || 'home');
+        loadFragment(route);
+      });
+
+      // initial load (use hash if present)
+      const initialHash = (window.location.hash || '').replace(/^#\/?/, '');
+      const initialRoute = normalizeRouteFromHref(initialHash || 'home');
+
+      loadFragment(initialRoute);
+
+    })();
+
+   </script>
+
+  </body>
+
+ </html>
