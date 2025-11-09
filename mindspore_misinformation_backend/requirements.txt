@@ -1,0 +1,40 @@
+╔════════════════════════════════════════════════════════════════════╗
+║   MindSpore Misinformation Detection System - Dependencies        ║
+║   Install with: pip install -r requirements.txt                   ║
+╚════════════════════════════════════════════════════════════════════╝
+
+# CRITICAL - AI/ML Framework (REQUIRED!)
+mindspore>=2.7.0              # Neural network framework - Powers all 9 detection tools
+
+# Web Server Framework (REQUIRED!)
+flask>=2.3.0                  # Backend API server (port 5000, 13+ endpoints)
+flask-cors>=4.0.0             # Cross-origin support for frontend communication
+
+# PDF Document Analysis (REQUIRED for PDF tool)
+PyPDF2>=3.0.0                 # PDF parsing and text extraction
+pdfplumber>=0.9.0             # Advanced PDF table/layout extraction
+pytesseract>=0.3.10           # OCR for image-based PDFs (needs: apt install tesseract-ocr)
+
+# Image/Video Processing (REQUIRED for Image & Video tools)
+Pillow>=10.0.0                # Image manipulation and analysis
+opencv-python>=4.8.0          # Computer vision - Deepfake detection, video analysis
+
+# Real-Time Fact Checking (REQUIRED for online verification)
+requests>=2.28.0              # HTTP requests - Domain checks, fact-checking APIs
+aiohttp>=3.8.0                # Async HTTP - Wikipedia, DuckDuckGo, Snopes queries
+
+# Data Processing & Utilities (REQUIRED!)
+numpy>=1.21.0                 # Math operations - FFT, audio analysis, neural networks
+python-dateutil>=2.8.0        # Date parsing for news verification
+
+╔════════════════════════════════════════════════════════════════════╗
+║  WHAT HAPPENS WHEN YOU INSTALL:                                   ║
+║  - MindSpore neural networks for all 9 detection tools            ║
+║  - Flask web server to serve API endpoints                        ║
+║  - PDF analyzers (text extraction + OCR)                          ║
+║  - Image/video processors (OpenCV, Pillow)                        ║
+║  - Real-time fact checker (Wikipedia, Snopes, DuckDuckGo)         ║
+║  - All supporting libraries                                       ║
+║                                                                    ║
+║  Total install size: ~2-3 GB (includes MindSpore)                 ║
+╚════════════════════════════════════════════════════════════════════╝
